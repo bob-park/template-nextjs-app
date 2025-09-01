@@ -24,7 +24,6 @@
     "overlay-kit": "^1.8.5",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "recharts": "^3.1.2",
     "sharp": "^0.34.3",
     "sockjs-client": "^1.6.1",
     "timeago-react": "^3.0.6",
