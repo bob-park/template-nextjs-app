@@ -9,6 +9,8 @@
 ## Spec
 
 - typescript 5
+- eslint 9
+- prettier
 - nextjs 15
 - react 19
 - react-scan
@@ -20,6 +22,11 @@
 - sockjs
 
 
+
+## eslint + prettier
+eslint + prettier 는 Bob Park Repository 에 따른다.
+- eslint: https://github.com/bob-park/eslint-config-bobpark
+- prettier: https://github.com/bob-park/prettier-config-bobpark
 
 ## dir 구조
 ```text
