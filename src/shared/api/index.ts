@@ -23,7 +23,9 @@ export function getNextPageParams<T>(lastPage: Page<T>) {
   const page = {
     size: lastPage.pageable.pageSize,
     page: lastPage.pageable.pageNumber,
+    sort: `${lastPage.pageable.sort.orders[0].property},${lastPage.pageable.sort.orders[0].direction}`,
   };
+
   const nextPage = page.page + 1;
 
   if (nextPage > totalPage - 1) {
@@ -33,6 +35,7 @@ export function getNextPageParams<T>(lastPage: Page<T>) {
   return {
     size: page.size,
     page: nextPage,
+    sort: page.sort,
   };
 }
 

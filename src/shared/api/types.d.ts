@@ -3,9 +3,19 @@ type SearchPageParams = {
   size: number;
 };
 
+interface Order {
+  direction: 'ASC' | 'DESC';
+  property: string;
+}
+
+interface Sort {
+  orders: Order[];
+}
+
 interface Pageable {
   pageNumber: number;
   pageSize: number;
+  sort: Sort;
 }
 
 /**
