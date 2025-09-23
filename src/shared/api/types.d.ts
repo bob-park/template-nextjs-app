@@ -3,8 +3,10 @@ type SearchPageParams = {
   size: number;
 };
 
+type Direction = 'ASC' | 'DESC';
+
 interface Order {
-  direction: 'ASC' | 'DESC';
+  direction: Direction;
   property: string;
 }
 

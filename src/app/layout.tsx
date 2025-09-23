@@ -6,7 +6,6 @@ import { redirect } from 'next/navigation';
 import { HydrationBoundary, QueryClient, dehydrate } from '@tanstack/react-query';
 
 import RQProvider from '@/shared/components/queries/RQProvider';
-import ReactScan from '@/shared/components/scan/ReactScan';
 import ToastProvider from '@/shared/components/toast/ToastProvider';
 
 import './globals.css';
@@ -42,7 +41,6 @@ export default async function RootLayout({
 
   return (
     <html lang="ko">
-      <ReactScan />
       <body className="relative size-full">
         <RQProvider>
           <HydrationBoundary state={dehydratedState}>
