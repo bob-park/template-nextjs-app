@@ -10,6 +10,13 @@ const nextConfig: NextConfig = {
       dynamic: 0,
     },
   },
+  images: {
+    remotePatterns: [
+      {
+        hostname: '**',
+      },
+    ],
+  },
   async headers() {
     return [
       {
@@ -34,7 +41,7 @@ const nextConfig: NextConfig = {
         destination: `${process.env.WEB_SERVICE_HOST}/:path*`,
       },
       {
-        source: '/api/oauth2/authorization/keyflow-auth',
+        source: '/oauth2/authorization/keyflow-auth',
         destination: process.env.WEB_SERVICE_HOST + '/oauth2/authorization/keyflow-auth',
       },
     ];

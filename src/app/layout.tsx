@@ -33,10 +33,11 @@ export default async function RootLayout({
     },
   });
 
-  if (!res.ok) {
-    redirect('/api/oauth2/authorization/keyflow-auth');
-  }
+  let user;
 
+  if (res.ok) {
+    user = (await res.json()) as User;
+  }
   const dehydratedState = dehydrate(queryClient);
 
   return (
