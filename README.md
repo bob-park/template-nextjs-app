@@ -11,7 +11,7 @@
 - typescript 5
 - eslint 9
 - prettier
-- nextjs 15
+- nextjs 16
 - react 19
 - react-scan
 - react-icon
