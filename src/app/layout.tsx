@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 
 import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
 
 import { HydrationBoundary, QueryClient, dehydrate } from '@tanstack/react-query';
 
@@ -11,6 +10,9 @@ import ToastProvider from '@/shared/components/toast/ToastProvider';
 import './globals.css';
 
 const { WEB_SERVICE_HOST } = process.env;
+
+const COOKIE_NAME_THEME = 'theme';
+const COOKIE_NAME_TOKEN = 'auth-token';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -24,12 +26,14 @@ export default async function RootLayout({
 }>) {
   const cookieStore = await cookies();
 
+  const theme = (cookieStore.get(COOKIE_NAME_THEME)?.value ?? 'light') as Theme;
+
   const queryClient = new QueryClient();
 
   const res = await fetch(`${WEB_SERVICE_HOST}/users/me`, {
     method: 'get',
     headers: {
-      Cookie: `JSESSIONID=${cookieStore.get('JSESSIONID')?.value || ''}`,
+      Cookie: `${COOKIE_NAME_TOKEN}=${cookieStore.get(COOKIE_NAME_TOKEN)?.value || ''}`,
     },
   });
 
@@ -41,7 +45,7 @@ export default async function RootLayout({
   const dehydratedState = dehydrate(queryClient);
 
   return (
-    <html lang="ko">
+    <html lang="ko" data-theme={theme}>
       <body className="relative size-full">
         <RQProvider>
           <HydrationBoundary state={dehydratedState}>
