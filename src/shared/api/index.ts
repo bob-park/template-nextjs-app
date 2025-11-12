@@ -1,3 +1,5 @@
+import delay from '@/utils/delay';
+
 import ky from 'ky';
 
 const index = ky.extend({
@@ -37,6 +39,18 @@ export function getNextPageParams<T>(lastPage: Page<T>) {
     page: nextPage,
     sort: page.sort,
   };
+}
+
+export async function waitForDelay<T>(req: Promise<T>, delayTime: number = 1_000) {
+  const result = Promise.allSettled([req, delay(delayTime)]);
+
+  return result.then(([item]) => {
+    if (item.status === 'rejected') {
+      throw new Error(item.reason);
+    }
+
+    return item.value;
+  });
 }
 
 export default index;
