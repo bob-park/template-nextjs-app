@@ -41,6 +41,7 @@ export function useUsers(params: UserSearchRequest & PageRequest) {
     pageable: {
       pageSize: 25,
       pageNumber: data?.pages[0]?.pageable?.pageNumber ?? 0,
+      sort: { orders: [] },
     },
   };
 
