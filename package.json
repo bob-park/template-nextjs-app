@@ -53,9 +53,13 @@
     "typescript": "^5"
   },
   "prettier": "@bob-park/prettier-config-bobpark",
-  "packageManager": "yarn@4.9.4",
+  "packageManager": "yarn@4.12.0",
   "resolutions": {
     "@types/react": "19.2.2",
     "@types/react-dom": "19.2.2"
+  },
+  "volta": {
+    "node": "24.12.0",
+    "yarn": "4.12.0"
   }
 }
