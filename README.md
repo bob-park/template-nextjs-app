@@ -23,10 +23,24 @@
 
 
 
+
 ## eslint + prettier
 eslint + prettier 는 Bob Park Repository 에 따른다.
 - eslint: https://github.com/bob-park/eslint-config-bobpark
 - prettier: https://github.com/bob-park/prettier-config-bobpark
+
+
+## Project node version management 
+node version 관리는 기본적으로 `mise` (mise en place) 로 구성한다.
+
+`mise` 설정시 다음과 같이 명령어를 실행한다.
+```bash
+mise trust
+
+# node 적용된 버전 확인
+mise ls 
+```
+
 
 ## dir 구조
 ```text
