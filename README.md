@@ -71,7 +71,9 @@ src
 
 
 ## Build
-기본적으로 docker container 로 빌드하며, multi-arch 로 빌드해야하기 때문에, `docker buildx bake` 를 사용한다.
+기본적으로 docker container 로 빌드한다.
+multi-arch 도 지원해야하므로, `docker buildx bake` 를 사용하여 build 한다.
+반드시 `docker-compose.yml` 를 수정하여, 올바른 image 와 tag 를 사용할 수 있도록 해야한다.
 
 ```bash
 # package.json 의 version 을 기준으로 image version 을 사용한다.
