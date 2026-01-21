@@ -68,3 +68,12 @@ src
 │   └── store
 └── utils
 ```
+
+
+## Build
+기본적으로 docker container 로 빌드하며, multi-arch 로 빌드해야하기 때문에, `docker buildx bake` 를 사용한다.
+
+```bash
+# package.json 의 version 을 기준으로 image version 을 사용한다.
+VERSION=$(node -p "require('./package.json').version") docker buildx bake -f docker-compose.yml --push --provenance false
+```
