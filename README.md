@@ -69,6 +69,21 @@ src
 └── utils
 ```
 
+## `PR` 시 자동 version up 기능
+`github workflows` + `github actions` 로 PR 시 자동으로 version up 을 진행한다.
+
+### version pattern
+[major].[minor].[patch]-rc[index]-[yyyyMMdd]
+
+#### major
+PR 제목에 `xxx [major]` 인 경우 major 버전이 `+1` 된다.
+
+#### minor
+PR 제목에 `xxx [minor]` 인 경우 minor 버전이 `+1` 된다.
+
+#### patch
+PR 제목에 `xxx` 인 경우 patch 버전이 `+1` 된다. 단, 같은 날인 경우 rc[index] 가 `+1` 된다.
+
 
 ## Build
 기본적으로 docker container 로 빌드한다.
