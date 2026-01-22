@@ -69,7 +69,7 @@ src
 └── utils
 ```
 
-## `PR` 시 자동 version up 기능
+## `PR` Merge 시 자동 version up 기능
 `github workflows` + `github actions` 로 PR 시 자동으로 version up 을 진행한다.
 
 ### version pattern
