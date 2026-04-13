@@ -5,11 +5,8 @@ const nextConfig: NextConfig = {
   reactStrictMode: false,
   experimental: {
     authInterrupts: true,
-    staleTimes: {
-      static: 0,
-      dynamic: 0,
-    },
   },
+  allowedDevOrigins: ['127.0.0.1', 'localhost'],
   images: {
     remotePatterns: [
       {
