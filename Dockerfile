@@ -18,7 +18,6 @@ WORKDIR /app
 # Install dependencies based on the preferred package manager
 COPY package.json yarn.lock* .yarnrc.yml ./
 COPY ./public ./public
-COPY .yarn .yarn
 RUN corepack prepare yarn@4.14.1 --activate
 RUN yarn install --immutable
 
