@@ -1,0 +1,7 @@
+node_modules
+.next
+.git
+.yarn/cache
+.yarn/install-state.gz
+Dockerfile
+.env*.local

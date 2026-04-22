@@ -3,15 +3,23 @@ FROM node:24-alpine AS base
 ARG GITHUB_NPM_AUTH_TOKEN
 ENV GITHUB_NPM_AUTH_TOKEN=$GITHUB_NPM_AUTH_TOKEN
 
+RUN apk add --no-cache libc6-compat \
+    && rm -f /usr/local/bin/yarn /usr/local/bin/yarnpkg \
+    && npm install -g corepack@latest \
+    && corepack enable
+
+ENV COREPACK_ENABLE_DOWNLOAD_PROMPT=0
+
+
 # Install dependencies only when needed
 FROM base AS deps
-RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 # Install dependencies based on the preferred package manager
 COPY package.json yarn.lock* .yarnrc.yml ./
 COPY ./public ./public
 COPY .yarn .yarn
+RUN corepack prepare yarn@4.14.1 --activate
 RUN yarn install --immutable
 
 
@@ -21,6 +29,9 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+ENV NEXT_TELEMETRY_DISABLED=1
+
+RUN corepack prepare yarn@4.14.1 --activate
 RUN yarn build
 
 # Production image, copy all the files and run next
@@ -30,6 +41,7 @@ WORKDIR /app
 RUN apk add --no-cache curl
 
 ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
