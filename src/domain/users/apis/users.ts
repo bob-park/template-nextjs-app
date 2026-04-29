@@ -6,7 +6,7 @@ export async function getMe() {
 }
 
 export async function getUsers(params: UserSearchRequest & PageRequest) {
-  return api.get('/api/users', { searchParams: params }).json<Page<User>>();
+  return api.get('/api/users', { searchParams: params }).json<PagedModel<User>>();
 }
 
 export async function getUser(id: string) {

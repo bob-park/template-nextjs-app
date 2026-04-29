@@ -16,9 +16,9 @@ export function useMe() {
 
 export function useUsers(params: UserSearchRequest & PageRequest) {
   const { data, fetchNextPage, isLoading, refetch } = useInfiniteQuery<
-    Page<User>,
+    PagedModel<User>,
     unknown,
-    InfiniteData<Page<User>>,
+    InfiniteData<PagedModel<User>>,
     QueryKey,
     PageRequest
   >({
@@ -28,20 +28,20 @@ export function useUsers(params: UserSearchRequest & PageRequest) {
       size: 25,
       page: 0,
     },
-    getNextPageParam: (lastPage) => getNextPageParams<User>(lastPage),
+    getNextPageParam: (lastPage) => getNextPageParams<User>(lastPage, params.sort),
   });
 
-  const users = (data?.pages || ([] as Page<User>[])).reduce(
+  const users = (data?.pages || ([] as PagedModel<User>[])).reduce(
     (current, value) => current.concat(value.content),
     [] as User[],
   );
 
-  const page: Pick<Page<User>, 'total' | 'pageable'> = {
-    total: data?.pages[0]?.total ?? 0,
-    pageable: {
-      pageSize: 25,
-      pageNumber: data?.pages[0]?.pageable?.pageNumber ?? 0,
-      sort: { orders: [] },
+  const page: Pick<PagedModel<User>, 'page'> = {
+    page: {
+      size: data?.pages[0]?.page?.size ?? 25,
+      number: data?.pages[0]?.page?.number ?? 0,
+      totalElements: data?.pages[0]?.page.totalElements ?? 0,
+      totalPages: data?.pages[0]?.page?.totalPages ?? 0,
     },
   };
 

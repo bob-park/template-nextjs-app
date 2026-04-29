@@ -3,30 +3,19 @@ type SearchPageParams = {
   size: number;
 };
 
-type Direction = 'ASC' | 'DESC';
-
-interface Order {
-  direction: Direction;
-  property: string;
-}
-
-interface Sort {
-  orders: Order[];
-}
-
-interface Pageable {
-  pageNumber: number;
-  pageSize: number;
-  sort: Sort;
-}
-
 /**
  * Page Response
  */
-interface Page<T> {
+interface PageMetadata {
+  size: number;
+  number: number;
+  totalElements: number;
+  totalPages: number;
+}
+
+interface PagedModel<T> {
+  page: PageMetadata;
   content: T[];
-  pageable: Pageable;
-  total: number;
 }
 
 /**
