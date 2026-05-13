@@ -54,6 +54,7 @@ docker-compose*dev.yml
 *.iml
 *.ipr
 
+### AI ###
 .claude/
 .gstack/
 .superpowers/
