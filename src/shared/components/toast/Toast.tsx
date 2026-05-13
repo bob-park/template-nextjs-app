@@ -9,6 +9,15 @@ import { TbMessageFilled } from 'react-icons/tb';
 
 import cx from 'classnames';
 
+export type MessageLevel = 'success' | 'warning' | 'error' | 'info' | 'message';
+
+export interface ToastMessage {
+  id: string;
+  level: MessageLevel;
+  message: string;
+  createdDate: Date;
+}
+
 interface ToastProps {
   message: ToastMessage;
   timeout: number;

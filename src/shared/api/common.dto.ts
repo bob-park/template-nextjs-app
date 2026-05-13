@@ -26,3 +26,5 @@ type PageRequest = {
   size: number;
   sort?: string;
 };
+
+export type { SearchPageParams, PageRequest, PageMetadata, PagedModel };

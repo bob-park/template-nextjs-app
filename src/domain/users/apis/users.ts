@@ -1,4 +1,6 @@
+import { User, UserRegisterRequest, UserSearchRequest } from '@/domain/users/apis/users.dto';
 import api from '@/shared/api';
+import { PageRequest, PagedModel } from '@/shared/api/common.dto';
 import delay from '@/utils/delay';
 
 export async function getMe() {

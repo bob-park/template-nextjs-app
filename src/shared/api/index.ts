@@ -2,6 +2,8 @@ import delay from '@/utils/delay';
 
 import ky from 'ky';
 
+import { PagedModel } from './common.dto';
+
 const index = ky.extend({
   hooks: {
     afterResponse: [

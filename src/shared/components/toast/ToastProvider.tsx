@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { v4 as uuid } from 'uuid';
 
-import Toast from './Toast';
+import Toast, { MessageLevel, ToastMessage } from './Toast';
 
 dayjs.extend(relativeTime);
 

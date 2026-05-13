@@ -1,7 +1,9 @@
 import { InfiniteData, QueryKey, useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { checkUserId, getMe, getUser, getUsers, register, removeUser, restoreUser } from '@/domain/users/apis/users';
+import { User, UserRegisterRequest, UserSearchRequest } from '@/domain/users/apis/users.dto';
 import { getNextPageParams } from '@/shared/api';
+import { PageRequest, PagedModel } from '@/shared/api/common.dto';
 
 export function useMe() {
   const { data } = useQuery<User>({

@@ -51,3 +51,5 @@ interface UserRegisterRequest {
   cellPhone?: string;
   roleType: RoleType;
 }
+
+export type { User, UserSearchRequest, UserRegisterRequest };
