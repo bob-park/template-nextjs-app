@@ -19,6 +19,7 @@ pre-configured baseline so new product apps can start from a consistent stack.
 - **State / Data:** TanStack Query 5, Zustand 5 (immer + devtools middleware)
 - **HTTP / Realtime:** ky, sockjs-client, @stomp/stompjs
 - **Date / Utility:** dayjs, classnames, lodash, uuid, immer, overlay-kit
+- **UI Utilities:** react-icons, timeago-react (+ timeago.js), lottie-react
 - **Lint / Format:** `@bob-park/eslint-config-bobpark`,
   `@bob-park/prettier-config-bobpark`
 
@@ -53,14 +54,14 @@ src/
 │       └── store/      # Zustand slice + types
 ├── shared/             # Reusable across domains
 │   ├── api/            # ky instance, common dto (PagedModel, PageRequest)
-│   ├── components/     # Cross-cutting components (toast, timeago, queries)
+│   ├── components/     # Cross-cutting components (toast, timeago, timecode, queries)
 │   ├── hooks/          # Reusable hooks (useModal, useWebSocket, ...)
 │   ├── providers/      # React context providers (theme, ...)
 │   ├── queries/        # Shared React Query types/utilities
 │   ├── store/          # Root Zustand store (combines domain slices)
 │   └── dayjs/          # dayjs configuration / locale setup
 ├── utils/              # Pure utility functions (no React, no I/O)
-└── proxy.ts            # Auth proxy / middleware logic
+└── proxy.ts            # Auth proxy logic — call from a Next.js middleware
 ```
 
 Rule: when adding a new domain, create all four sub-folders (`apis`,
@@ -103,7 +104,9 @@ project-specific patterns are documented here.
 ### 5.5 State Management — Zustand
 
 - Each domain exposes a slice using
-  `SlicePattern<DomainState, BoundState>` from `zustand`.
+  `SlicePattern<DomainState, BoundState>`. The `SlicePattern` type is provided
+  by a module augmentation in `src/shared/store/types.d.ts` (imported as if
+  from `zustand`).
 - Slices are combined in `src/shared/store/rootStore.ts`; the union of all
   slice state types is `BoundState`.
 - Action names follow `domain/actionName` for the devtools `type` field
@@ -115,10 +118,15 @@ project-specific patterns are documented here.
 ### 5.6 Data Fetching — ky + React Query
 
 - Use the shared `api` instance from `@/shared/api`. It auto-redirects on 401
-  to the `KeyFlow` login flow.
+  to `/api/oauth2/authorization/keyflow-auth` (the `KeyFlow` login flow).
+- The shared `api` is **browser-only** — it relies on `location.href` for the
+  redirect. From Server Components and Route Handlers, use plain `fetch`
+  instead (see `src/app/layout.tsx` for the pattern).
 - React Query keys follow `[domain, ...specifier]`:
   - `['users']`, `['users', id]`, `['users', 'check', userId]`,
     `['users', 'register']`, etc.
+  - Short keys like `['me']` (the current user) are accepted as legacy
+    exceptions but new code should prefer the `[domain, ...specifier]` shape.
 - Mutation hooks accept `QueryMutationHandle<T>` (ambient global type with
   `onSuccess`/`onError`) and return `{ <verb>: mutate, isLoading: isPending }`.
 - Pagination uses `PagedModel<T>` and the `getNextPageParams` helper from
@@ -158,6 +166,9 @@ functions only** — no React, no I/O.
 ## 7. Git Workflow
 
 ### 7.1 Branch Naming
+
+These are the target conventions. The repository currently ships with
+`master` only; create `develop` / `feature/*` / `hotfix/*` branches on demand.
 
 - `master` — production-shippable. Release tags are cut from this branch.
 - `develop` — next-release integration branch.
