@@ -175,6 +175,18 @@ These are the target conventions. The repository currently ships with
 - `feature/<topic>` — new feature development.
 - `hotfix/<topic>` — patches against an already-released version.
 
+Rules:
+
+- Use lowercase, kebab-case for `<topic>` (e.g., `feature/asset-upload`,
+  `hotfix/jwt-scope-mapping`).
+- When opening a PR from a `feature/*` branch, the base branch **MUST** be
+  `develop`. Targeting `master` directly is not allowed for feature work;
+  promotion to `master` happens through a separate `develop` → `master`
+  release PR.
+- Do not commit directly to `master` or `develop` — always go through a PR.
+- A tag is created on `master` when a release ships; tag name follows the
+  version pattern in §7.3.
+
 ### 7.2 Commit Message Prefix
 
 Format: `prefix: 한국어 설명`. Follow the existing history style.
