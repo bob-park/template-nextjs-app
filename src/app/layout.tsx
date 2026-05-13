@@ -4,7 +4,9 @@ import { cookies } from 'next/headers';
 
 import { HydrationBoundary, QueryClient, dehydrate } from '@tanstack/react-query';
 
+import { User } from '@/domain/users/apis/users.dto';
 import RQProvider from '@/shared/components/queries/RQProvider';
+import { Theme } from '@/shared/components/theme/theme';
 import ToastProvider from '@/shared/components/toast/ToastProvider';
 
 import './globals.css';
