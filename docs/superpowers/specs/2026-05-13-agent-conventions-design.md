@@ -208,14 +208,19 @@ Imports AGENTS.md, then adds Claude Code-only rules.
 - mise trust / mise ls (Node 버전)
 - 테스트 스크립트는 현재 없음 — 도입 시 본 섹션과 AGENTS.md 의 Tech Stack 을 함께 업데이트
 
-### 디자인 프롬프트 처리
+### Design Prompt 템플릿 위치
+- 재사용 가능한 시스템 디자인 / UI 디자인 prompt 템플릿은 `./docs/design/` 에 보관
+- 사용자가 디자인 관련 요청을 줄 때, agent 는 먼저 `./docs/design/` 의 템플릿을
+  확인하여 일관된 출력 스타일과 산출물 형식을 따른다
+
+### 디자인 프롬프트 처리 워크플로우
 사용자가 UI/디자인 관련 요청(목업, 레이아웃 비교, 비주얼 컴포넌트) 을 줄 때:
-1. superpowers brainstorming 단계에서 visual companion 사용을 먼저 제안
-2. 동의 시 정적 HTML 목업을 `./docs/design/<topic>/` 아래에 작성
-   (날짜 prefix 권장: `./docs/design/2026-05-13-<topic>/`)
-3. `npx serve ./docs/design/<topic>` 또는 `python3 -m http.server` 로 로컬 HTTP 서버 구동, URL 안내
-4. 사용자 피드백을 받아 반복, 최종 합의된 디자인만 실제 코드에 반영
-5. 서버 포트는 사용자에게 알리고, 작업 종료 시 정리
+1. `./docs/design/` 에 적용 가능한 prompt 템플릿이 있는지 먼저 확인
+2. superpowers brainstorming 단계에서 visual companion 사용을 제안
+3. 동의 시 정적 HTML 목업을 임시 디렉토리에 작성
+4. `npx serve <dir>` 또는 `python3 -m http.server` 로 로컬 HTTP 서버 구동, URL 안내
+5. 사용자 피드백을 받아 반복, 최종 합의된 디자인만 실제 코드에 반영
+6. 서버 포트는 사용자에게 알리고, 작업 종료 시 정리
 ```
 
 ## 4. Out of Scope
