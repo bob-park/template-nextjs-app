@@ -53,3 +53,7 @@ docker-compose*dev.yml
 *.iws
 *.iml
 *.ipr
+
+.claude/
+.gstack/
+.superpowers/

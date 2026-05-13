@@ -6,9 +6,18 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { v4 as uuid } from 'uuid';
 
-import Toast, { MessageLevel, ToastMessage } from './Toast';
+import Toast from './Toast';
 
 dayjs.extend(relativeTime);
+
+export type MessageLevel = 'success' | 'warning' | 'error' | 'info' | 'message';
+
+export interface ToastMessage {
+  id: string;
+  level: MessageLevel;
+  message: string;
+  createdDate: Date;
+}
 
 interface ToastProviderContextState {
   messages: ToastMessage[];

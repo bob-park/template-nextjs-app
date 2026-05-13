@@ -7,16 +7,9 @@ import { IoClose, IoWarning } from 'react-icons/io5';
 import { RiErrorWarningFill, RiInformationLine } from 'react-icons/ri';
 import { TbMessageFilled } from 'react-icons/tb';
 
+import { MessageLevel, ToastMessage } from '@/shared/components/toast/ToastProvider';
+
 import cx from 'classnames';
-
-export type MessageLevel = 'success' | 'warning' | 'error' | 'info' | 'message';
-
-export interface ToastMessage {
-  id: string;
-  level: MessageLevel;
-  message: string;
-  createdDate: Date;
-}
 
 interface ToastProps {
   message: ToastMessage;
