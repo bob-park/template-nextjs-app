@@ -43,7 +43,7 @@
 
 라인 102 (두 번째 bullet 끝) 와 라인 103 (빈 줄) 사이가 아니라, 라인 103 (빈 줄) 과 라인 104 (`### 5.5 ...`) 사이에 새 sub-heading 블록을 삽입한다. 결과적으로 §5.4 본문 → 빈 줄 → 새 sub-heading → 빈 줄 → §5.5 형태가 된다.
 
-- [ ] **Step 1: Edit AGENTS.md — §5.4 와 §5.5 사이에 새 sub-heading 삽입**
+- [x] **Step 1: Edit AGENTS.md — §5.4 와 §5.5 사이에 새 sub-heading 삽입**
 
 `Edit` 도구로 다음 치환을 적용한다. `old_string` 은 현 §5.4 마지막 bullet + 빈 줄 + §5.5 헤더이고, `new_string` 은 그 사이에 새 sub-section 을 끼워 넣은 것이다.
 
@@ -139,19 +139,19 @@ export default function Contents() {
 ### 5.5 State Management — Zustand
 ````
 
-- [ ] **Step 2: 변경 결과 시각 확인**
+- [x] **Step 2: 변경 결과 시각 확인**
 
 Run: `sed -n '97,170p' AGENTS.md`
 
 기대 출력 — §5.4 의 기존 bullet 2개 → 빈 줄 → `#### Client Component Section Comments` → 본문 (순서/예시/마이그레이션 정책) → 빈 줄 → `### 5.5 State Management — Zustand` 의 순서로 나타난다. `### 5.4.1` 같은 번호는 사용하지 않는다 (기존 AGENTS.md 의 sub-section 패턴이 없으므로 h4 sub-heading 형식만 사용).
 
-- [ ] **Step 3: ESLint 회귀 없는지 확인**
+- [x] **Step 3: ESLint 회귀 없는지 확인**
 
 Run: `yarn lint`
 
 기대: AGENTS.md 는 `./src` 밖이므로 영향 없음. 기존 `yarn lint` 가 통과하던 상태 그대로여야 한다. 새로운 에러가 등장하면 plan 외 원인이므로 별도 조사한다.
 
-- [ ] **Step 4: prettier check 영향 없음 확인**
+- [x] **Step 4: prettier check 영향 없음 확인**
 
 `AGENTS.md §6` 에 따르면 prettier 대상은 `**/*.{js,jsx,ts,tsx,css,html}` 로 markdown 비대상이다. 따라서 자동 포매팅 실행은 생략한다. 안전 확인용으로 아래 명령을 실행해 변경 사항이 markdown 외 파일에 없음을 확인한다.
 
@@ -162,7 +162,7 @@ Run: `git diff --name-only`
 AGENTS.md
 ```
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add AGENTS.md
@@ -181,7 +181,7 @@ EOF
 
 기대 출력: `master <sha>] docs: AGENTS.md §5.4 client component 섹션 주석 컨벤션 추가` + `1 file changed, N insertions(+)`.
 
-- [ ] **Step 6: 결과 확인**
+- [x] **Step 6: 결과 확인**
 
 Run: `git log -1 --stat`
 

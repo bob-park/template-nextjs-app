@@ -135,7 +135,7 @@ export default function Contents() {
 
 | 파일 | 변경 내용 |
 |---|---|
-| `AGENTS.md` | §5.4 하위에 `### 5.4.1 Client Component Section Comments` 추가 |
+| `AGENTS.md` | §5.4 하위에 `#### Client Component Section Comments` 추가 |
 | `CLAUDE.md` | 변경 없음 (`@AGENTS.md` 참조로 자동 반영) |
 | `src/**/*.tsx` | 본 spec 에서는 변경하지 않음 (점진 마이그레이션 정책) |
 
