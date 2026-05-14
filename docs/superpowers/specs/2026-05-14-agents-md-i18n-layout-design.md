@@ -52,7 +52,7 @@ messages/               # next-intl translation messages — messages/<locale>.j
 
 - `src/app/_layout/` 라인은 `src/app/` 항목 바로 아래에 둔다 (현재 `└── api/` 라인 위).
 - `src/shared/i18n/` 라인은 `src/shared/` 의 기존 항목들과 알파벳/논리적 순서를 유지해 삽입한다 (`hooks` 다음, `providers` 위 권장).
-- `messages/` 는 `src/` 외부이므로 트리 블록 **하단에 별도 라인**으로 추가한다 (`proxy.ts` 라인 아래, 트리 바깥 한 줄).
+- `messages/` 는 `src/` 외부이므로 **같은 ` ```text ` 코드 블록 안**에서 `src/` 트리 바로 다음에 빈 줄 한 줄을 두고 별도 top-level 라인으로 추가한다 (예시: 위 코드 블록 형식 그대로).
 
 기존 "Rule: when adding a new domain..." 문장은 그대로 유지.
 
@@ -182,7 +182,7 @@ src/app/
 ## 6. Acceptance Criteria
 
 - `AGENTS.md` §4 트리에 `src/app/_layout/`, `src/shared/i18n/`, `messages/` 가 추가되어 있다.
-- `AGENTS.md` 에 §5.9 Internationalization (i18n) 가 존재하고 §4 Library & Wiring / Locale Resolution / Message Files / Usage / Locale Change 다섯 블록을 모두 포함한다.
+- `AGENTS.md` 에 §5.9 Internationalization (i18n) 가 존재하고 그 하위에 Library & Wiring / Locale Resolution / Message Files / Usage / Locale Change 다섯 블록을 모두 포함한다.
 - `AGENTS.md` 에 §5.10 App Router Layout Components 가 존재하고 핵심 규칙 + 디렉토리 예시를 포함한다.
 - §6 Linting & Formatting 이후의 섹션 번호는 변하지 않았다.
 - `yarn prettier` 적용 후 diff 가 없다 (마크다운은 prettier 대상이 아닐 수 있으나, 적용 시 변동 없음을 확인).
