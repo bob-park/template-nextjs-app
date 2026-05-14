@@ -112,8 +112,8 @@ project-specific patterns are documented here.
 1. `// ref` — `useRef`
 2. `// context` — `useContext`
 3. `// state` — `useState`, `useReducer`
-4. `// store` — Zustand selector (`useBoundStore(...)`)
-5. `// queries` — React Query hook (mutation hook 포함)
+4. `// store` — Zustand selector (`useStore(...)`)
+5. `// queries` — React Query hook (`useXxx({...})`, mutation hook 포함)
 6. `// useEffect`
 7. `// useLayoutEffect`
 8. `// handle` — 이벤트 핸들러 / 액션 함수 (`handleXxx`) 등 일반 함수 정의
@@ -129,6 +129,11 @@ Server Component (디렉티브 없음) 은 적용 대상이 아니다.
 ```tsx
 'use client';
 
+import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+
+import { useStore } from '@/shared/store/rootStore';
+// ContentsContext, useContents 는 도메인별 placeholder
+
 export default function Contents() {
   // ref
   const containerRef = useRef<HTMLDivElement>(null);
@@ -140,7 +145,7 @@ export default function Contents() {
   const [open, setOpen] = useState<boolean>(false);
 
   // store
-  const showAddUserModal = useBoundStore((s) => s.showAddUserModal);
+  const showAddUserModal = useStore((s) => s.showAddUserModal);
 
   // queries
   const { list, isLoading } = useContents({ size: 10, page: 0 });
@@ -156,7 +161,7 @@ export default function Contents() {
   };
 
   // memorize
-  const memoized = useMemo(() => heavy(list), [list]);
+  const memoized = useMemo(() => transform(list), [list]); // expensive transform 예시
 
   // callback
   const handleSelect = useCallback((id: string) => {
