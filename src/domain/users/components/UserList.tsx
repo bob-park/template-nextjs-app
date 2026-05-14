@@ -23,8 +23,6 @@ const UserItem = ({
   onDelete?: (id: string) => void;
   onRestore?: (id: string) => void;
 }>) => {
-  // state
-
   // handle
   const handleRowClick = () => {
     onClick?.(user.id);
