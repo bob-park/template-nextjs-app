@@ -45,6 +45,7 @@ both this section and `CLAUDE.md` command reference.
 ```text
 src/
 ├── app/                # Next.js App Router (pages, layouts, api routes)
+│   ├── _layout/        # Root layout 의 sub-components (Header, Contents, Footer) — see §5.10
 │   └── api/            # Route handlers (e.g. /api/health)
 ├── domain/             # Business domains — each domain owns its full slice
 │   └── <domain>/
@@ -56,12 +57,15 @@ src/
 │   ├── api/            # ky instance, common dto (PagedModel, PageRequest)
 │   ├── components/     # Cross-cutting components (toast, timeago, timecode, queries)
 │   ├── hooks/          # Reusable hooks (useModal, useWebSocket, ...)
+│   ├── i18n/           # next-intl config, locale resolution, server action — see §5.9
 │   ├── providers/      # React context providers (theme, ...)
 │   ├── queries/        # Shared React Query types/utilities
 │   ├── store/          # Root Zustand store (combines domain slices)
 │   └── dayjs/          # dayjs configuration / locale setup
 ├── utils/              # Pure utility functions (no React, no I/O)
 └── proxy.ts            # Auth proxy logic — call from a Next.js middleware
+
+messages/               # next-intl translation messages — messages/<locale>.json (see §5.9)
 ```
 
 Rule: when adding a new domain, create all four sub-folders (`apis`,
