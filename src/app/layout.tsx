@@ -47,18 +47,19 @@ export default async function RootLayout({
 
   const queryClient = new QueryClient();
 
-  // const res = await fetch(`${WEB_SERVICE_HOST}/users/me`, {
-  //   method: 'get',
-  //   headers: {
-  //     Cookie: `${COOKIE_NAME_TOKEN}=${cookieStore.get(COOKIE_NAME_TOKEN)?.value || ''}`,
-  //   },
-  // });
-  //
-  // let user;
-  //
-  // if (res.ok) {
-  //   user = (await res.json()) as User;
-  // }
+  const res = await fetch(`${WEB_SERVICE_HOST}/users/me`, {
+    method: 'get',
+    headers: {
+      Cookie: `${COOKIE_NAME_TOKEN}=${cookieStore.get(COOKIE_NAME_TOKEN)?.value || ''}`,
+    },
+  });
+
+  let user;
+
+  if (res.ok) {
+    user = (await res.json()) as User;
+  }
+
   const dehydratedState = dehydrate(queryClient);
 
   return (
