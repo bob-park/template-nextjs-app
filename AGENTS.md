@@ -364,7 +364,7 @@ export default function Greeting() {
 - 적용 범위: root (`src/app/_layout/`) 와 nested layout (예:
   `src/app/admin/_layout/`) **모두 동일 규칙**.
 
-#### 디렉토리 예시
+#### Directory Example
 
 ```text
 src/app/
@@ -385,7 +385,7 @@ src/app/
 
 - `src/app/layout.tsx` 는 `./_layout/Header`, `./_layout/Contents`,
   `./_layout/Footer` 를 사용한다.
-- `src/app/admin/layout.tsx` 는 `./_layout/Sidebar` 를 사용한다.
+- `src/app/admin/layout.tsx` 는 `./_layout/Sidebar` (즉 `src/app/admin/_layout/Sidebar`) 를 사용한다.
 - `admin/_layout/Sidebar` 를 root layout 에서 사용하고 싶다면 먼저
   `src/shared/components/` 로 승격한다.
 
