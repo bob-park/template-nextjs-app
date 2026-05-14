@@ -344,6 +344,51 @@ export default function Greeting() {
 - 클라이언트에서 직접 cookie 를 조작하지 않는다 — 항상 `setLocale` 을
   통한다.
 
+### 5.10 App Router Layout Components
+
+#### Core Rule
+
+- 어떤 디렉토리든 `layout.tsx` 가 sub-component 를 필요로 하면, **같은
+  디렉토리에 `_layout/` private folder** 를 만들어 그 안에 sub-component 를
+  둔다. underscore prefix 는 Next.js 가 라우트에서 제외하는 [private
+  folder](https://nextjs.org/docs/app/building-your-application/routing/colocation#private-folders)
+  규약이다.
+- 파일명은 §5.2 그대로 `PascalCase.tsx`. 예: `Header.tsx`, `Contents.tsx`,
+  `Footer.tsx`, `Sidebar.tsx`.
+- `layout.tsx` 에서 import 할 때는 같은 폴더이므로 **상대경로**
+  (`./_layout/Header`) 를 사용한다.
+- 다른 layout 의 `_layout/` 컴포넌트는 import 하지 않는다 — 각 `_layout/`
+  은 그 layout 전용이다.
+- Cross-layout 으로 재사용해야 하는 컴포넌트는 `_layout/` 이 아니라
+  `src/shared/components/<area>/` 로 승격한다 (§4 Directory Structure 참조).
+- 적용 범위: root (`src/app/_layout/`) 와 nested layout (예:
+  `src/app/admin/_layout/`) **모두 동일 규칙**.
+
+#### 디렉토리 예시
+
+```text
+src/app/
+├── _layout/
+│   ├── Header.tsx
+│   ├── Contents.tsx
+│   └── Footer.tsx
+├── admin/
+│   ├── _layout/
+│   │   └── Sidebar.tsx
+│   ├── layout.tsx
+│   └── page.tsx
+├── layout.tsx
+└── page.tsx
+```
+
+이 예시에서:
+
+- `src/app/layout.tsx` 는 `./_layout/Header`, `./_layout/Contents`,
+  `./_layout/Footer` 를 사용한다.
+- `src/app/admin/layout.tsx` 는 `./_layout/Sidebar` 를 사용한다.
+- `admin/_layout/Sidebar` 를 root layout 에서 사용하고 싶다면 먼저
+  `src/shared/components/` 로 승격한다.
+
 ## 6. Linting & Formatting
 
 - Run `yarn lint` before committing.
