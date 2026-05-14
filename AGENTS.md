@@ -101,6 +101,75 @@ project-specific patterns are documented here.
 - Pattern: `default export` the public component; co-locate small
   non-reusable sub-components in the same file.
 
+#### Client Component Section Comments
+
+`'use client'` 컴포넌트, client hook (`useXxx.tsx`), shared provider 는 함수
+본문을 아래 섹션 주석으로 구분한다. **순서는 고정**이며 사용하지 않는
+섹션은 주석을 **생략**한다 (빈 헤더를 남기지 않는다).
+
+순서:
+
+1. `// ref` — `useRef`
+2. `// context` — `useContext`
+3. `// state` — `useState`, `useReducer`
+4. `// store` — Zustand selector (`useBoundStore(...)`)
+5. `// queries` — React Query hook (mutation hook 포함)
+6. `// useEffect`
+7. `// useLayoutEffect`
+8. `// handle` — 이벤트 핸들러 / 액션 함수 (`handleXxx`) 등 일반 함수 정의
+9. `// memorize` — `useMemo`
+10. `// callback` — `useCallback`
+
+같은 섹션 안에서는 여러 줄을 자유롭게 작성한다. 같은 파일에 co-locate
+된 sub-component (예: `UserList.tsx` 의 `UserItem`) 도 동일 규칙을 따른다.
+Server Component (디렉티브 없음) 은 적용 대상이 아니다.
+
+표준 예시:
+
+```tsx
+'use client';
+
+export default function Contents() {
+  // ref
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // context
+  const { contents } = useContext(ContentsContext);
+
+  // state
+  const [open, setOpen] = useState<boolean>(false);
+
+  // store
+  const showAddUserModal = useBoundStore((s) => s.showAddUserModal);
+
+  // queries
+  const { list, isLoading } = useContents({ size: 10, page: 0 });
+
+  // useEffect
+  useEffect(() => {
+    // ...
+  }, [open]);
+
+  // handle
+  const handleClick = () => {
+    // ...
+  };
+
+  // memorize
+  const memoized = useMemo(() => heavy(list), [list]);
+
+  // callback
+  const handleSelect = useCallback((id: string) => {
+    // ...
+  }, []);
+
+  return <div>...</div>;
+}
+```
+
+기존 파일은 일괄 마이그레이션하지 않는다. 해당 파일을 다른 작업으로
+수정할 때 같은 PR 안에서 점진적으로 정리한다.
+
 ### 5.5 State Management — Zustand
 
 - Each domain exposes a slice using
