@@ -1,7 +1,7 @@
 # Client Component Section Comment Convention
 
 - **Date:** 2026-05-14
-- **Status:** Approved (brainstorming 단계 완료, 구현 계획 작성 대기)
+- **Status:** Implemented (AGENTS.md §5.4 반영 완료, 2026-05-14)
 - **Target Doc:** `AGENTS.md` §5.4 React Components 하위 절로 추가
 - **Cascades to:** `CLAUDE.md` 는 첫 줄 `@AGENTS.md` 참조이므로 별도 수정 불필요
 

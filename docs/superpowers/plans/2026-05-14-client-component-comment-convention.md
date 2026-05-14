@@ -202,13 +202,13 @@ Run: `git log -1 --stat`
 - `ToastProvider.tsx` — 이미 `// state`, `// useEffect`, `// handle`, `// memorize` 가 적용되어 있어 누락 섹션만 정렬하면 신규 컨벤션 예시로 가장 가깝다.
 - `UserList.tsx` — 빈 `// state` placeholder 가 남아 있어 spec §5 "빈 섹션 생략" 정책 적용 사례로 적합하다.
 
-- [ ] **Step 1: `ToastProvider.tsx` 현 상태 점검**
+- [x] **Step 1: `ToastProvider.tsx` 현 상태 점검**
 
 Run: `sed -n '38,82p' src/shared/components/toast/ToastProvider.tsx`
 
 기대: 현재 순서는 `// state` (line 39) → `// useEffect` (line 42) → `// handle` (line 53) → `// memorize` (line 79). 새 컨벤션의 고정 순서 (state → useEffect → handle → memorize) 와 이미 일치하므로 **변경 불필요**. 이 step 은 확인만 수행한다.
 
-- [ ] **Step 2: `UserList.tsx` 의 빈 `// state` 주석 제거 (sub-component `UserItem`)**
+- [x] **Step 2: `UserList.tsx` 의 빈 `// state` 주석 제거 (sub-component `UserItem`)**
 
 `Edit` 도구로 다음 치환을 적용한다.
 
@@ -230,19 +230,21 @@ Run: `sed -n '38,82p' src/shared/components/toast/ToastProvider.tsx`
 
 기대 효과: 빈 섹션 헤더 제거. spec §5 "사용 안 하는 섹션은 생략" 정책에 부합.
 
-- [ ] **Step 3: ESLint 회귀 없는지 확인**
+- [x] **Step 3: ESLint 회귀 없는지 확인**
 
 Run: `yarn lint`
 
 기대: 통과. `UserItem` 의 함수 본문이 정상이며 미사용 import 가 새로 생기지 않음.
 
-- [ ] **Step 4: prettier 적용**
+- [~] **Step 4: prettier 적용 — 단일 파일로 한정 실행됨**
 
-Run: `yarn prettier`
+Run: `npx prettier --write src/domain/users/components/UserList.tsx`
 
-기대: 변경 없음 또는 minor whitespace 수정만 발생. `yarn prettier` 가 자동 적용하므로 결과 diff 를 다음 step 에서 확인한다.
+원래 plan 의 `yarn prettier` 는 repo 전체를 자동 포매팅하므로 task 범위
+밖 파일까지 변경될 위험이 있었다. 단일 파일 대상으로 변경하여 안전하게
+실행. 결과: 추가 포매팅 변경 없음.
 
-- [ ] **Step 5: 변경 범위 확인**
+- [x] **Step 5: 변경 범위 확인**
 
 Run: `git diff --name-only`
 
@@ -253,7 +255,7 @@ src/domain/users/components/UserList.tsx
 
 `ToastProvider.tsx` 는 Step 1 결과 변경 없음이어야 한다. 다른 파일이 함께 변경되어 있으면 prettier 가 의도치 않은 곳까지 손댔다는 신호이므로 `git diff` 로 원인 파악 후 진행 여부 재결정.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add src/domain/users/components/UserList.tsx
