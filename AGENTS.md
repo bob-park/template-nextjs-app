@@ -113,12 +113,14 @@ project-specific patterns are documented here.
 2. `// context` — `useContext`
 3. `// state` — `useState`, `useReducer`
 4. `// store` — Zustand selector (`useStore(...)`)
-5. `// queries` — React Query hook (`useXxx({...})`, mutation hook 포함)
-6. `// useEffect`
-7. `// useLayoutEffect`
-8. `// handle` — 이벤트 핸들러 / 액션 함수 (`handleXxx`) 등 일반 함수 정의
-9. `// memorize` — `useMemo`
-10. `// callback` — `useCallback`
+5. `// hooks` — 위 섹션에 들어가지 않는 React / 외부 라이브러리 hook (예:
+   Next.js `useRouter`, `usePathname`, `useSearchParams`)
+6. `// queries` — React Query hook (`useXxx({...})`, mutation hook 포함)
+7. `// useEffect`
+8. `// useLayoutEffect`
+9. `// handle` — 이벤트 핸들러 / 액션 함수 (`handleXxx`) 등 일반 함수 정의
+10. `// memorize` — `useMemo`
+11. `// callback` — `useCallback`
 
 같은 섹션 안에서는 여러 줄을 자유롭게 작성한다. 같은 파일에 co-locate
 된 sub-component (예: `UserList.tsx` 의 `UserItem`) 도 동일 규칙을 따른다.
@@ -130,6 +132,7 @@ Server Component (디렉티브 없음) 은 적용 대상이 아니다.
 'use client';
 
 import { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 import { useStore } from '@/shared/store/rootStore';
 // ContentsContext, useContents 는 도메인별 placeholder
@@ -146,6 +149,9 @@ export default function Contents() {
 
   // store
   const showAddUserModal = useStore((s) => s.showAddUserModal);
+
+  // hooks
+  const router = useRouter();
 
   // queries
   const { list, isLoading } = useContents({ size: 10, page: 0 });
