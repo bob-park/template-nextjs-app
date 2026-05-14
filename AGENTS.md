@@ -65,7 +65,7 @@ src/
 ├── utils/              # Pure utility functions (no React, no I/O)
 └── proxy.ts            # Auth proxy logic — call from a Next.js middleware
 
-messages/               # next-intl translation messages — messages/<locale>.json (see §5.9)
+messages/               # next-intl translation messages — messages/<locale>.json — see §5.9
 ```
 
 Rule: when adding a new domain, create all four sub-folders (`apis`,
