@@ -13,6 +13,7 @@ import { Theme } from '@/shared/providers/theme/ThemeProvider';
 
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations } from 'next-intl/server';
+import { OverlayProvider } from 'overlay-kit';
 
 import Contents from './_layout/Contents';
 import Footer from './_layout/Footer';
@@ -66,15 +67,17 @@ export default async function RootLayout({
     <html lang={htmlLang} data-theme={theme}>
       <body className="relative size-full">
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <RQProvider>
-            <HydrationBoundary state={dehydratedState}>
-              <ToastProvider limit={5} timeout={5}>
-                <Header />
-                <Contents>{children}</Contents>
-                <Footer />
-              </ToastProvider>
-            </HydrationBoundary>
-          </RQProvider>
+          <OverlayProvider>
+            <RQProvider>
+              <HydrationBoundary state={dehydratedState}>
+                <ToastProvider limit={5} timeout={5}>
+                  <Header />
+                  <Contents>{children}</Contents>
+                  <Footer />
+                </ToastProvider>
+              </HydrationBoundary>
+            </RQProvider>
+          </OverlayProvider>
         </NextIntlClientProvider>
       </body>
     </html>

@@ -3,8 +3,6 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
-import { OverlayProvider } from 'overlay-kit';
-
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -20,7 +18,7 @@ const queryClient = new QueryClient({
 export default function RQProvider({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <QueryClientProvider client={queryClient}>
-      <OverlayProvider>{children}</OverlayProvider>
+      {children}
       <ReactQueryDevtools initialIsOpen={process.env.NODE_ENV !== 'production'} />
     </QueryClientProvider>
   );
