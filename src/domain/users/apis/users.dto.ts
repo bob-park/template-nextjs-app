@@ -52,4 +52,4 @@ interface UserRegisterRequest {
   roleType: RoleType;
 }
 
-export type { User, UserSearchRequest, UserRegisterRequest };
+export type { RoleType, User, UserSearchRequest, UserRegisterRequest };

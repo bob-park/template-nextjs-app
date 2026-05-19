@@ -1,5 +1,7 @@
 'use client';
 
+import { RoleType } from '@/domain/users/apis/users.dto';
+
 import cx from 'classnames';
 
 function parseRoleType(role: RoleType) {

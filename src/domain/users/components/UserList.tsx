@@ -4,6 +4,7 @@ import { BsThreeDotsVertical } from 'react-icons/bs';
 import { IoTrashOutline } from 'react-icons/io5';
 import { TbArrowBack } from 'react-icons/tb';
 
+import { User } from '@/domain/users/apis/users.dto';
 import UserAvatar from '@/domain/users/components/UserAvatar';
 import UserRoleBadge from '@/domain/users/components/UserRoleBadge';
 import TimeAgoKo from '@/shared/components/timeago';

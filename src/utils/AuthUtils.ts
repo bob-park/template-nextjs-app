@@ -1,3 +1,5 @@
+import { RoleType } from '@/domain/users/apis/users.dto';
+
 const RoleHierarchy: Record<string, string[]> = {
   ROLE_ADMIN: ['ROLE_MANAGER'],
   ROLE_MANAGER: ['ROLE_USER'],
