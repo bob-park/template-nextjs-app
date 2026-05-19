@@ -67,17 +67,17 @@ export default async function RootLayout({
     <html lang={htmlLang} data-theme={theme}>
       <body className="relative size-full">
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <OverlayProvider>
-            <RQProvider>
-              <HydrationBoundary state={dehydratedState}>
+          <RQProvider>
+            <HydrationBoundary state={dehydratedState}>
+              <OverlayProvider>
                 <ToastProvider limit={5} timeout={5}>
                   <Header />
                   <Contents>{children}</Contents>
                   <Footer />
                 </ToastProvider>
-              </HydrationBoundary>
-            </RQProvider>
-          </OverlayProvider>
+              </OverlayProvider>
+            </HydrationBoundary>
+          </RQProvider>
         </NextIntlClientProvider>
       </body>
     </html>
