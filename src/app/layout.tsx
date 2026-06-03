@@ -15,9 +15,9 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations } from 'next-intl/server';
 import { OverlayProvider } from 'overlay-kit';
 
-import Contents from './_layout/Contents';
-import Footer from './_layout/Footer';
-import Header from './_layout/Header';
+import Contents from './_layouts/Contents';
+import Footer from './_layouts/Footer';
+import Header from './_layouts/Header';
 import './globals.css';
 
 const { WEB_SERVICE_HOST } = process.env;
