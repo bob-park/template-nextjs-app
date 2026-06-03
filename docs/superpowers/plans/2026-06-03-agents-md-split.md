@@ -66,6 +66,99 @@ When copying content, replace these `§` references with markdown links:
 
 ---
 
+## Task 0: Rename `src/app/_layout/` → `src/app/_layouts/`
+
+Spec §2.1 item A standardizes on the plural `_layouts/`. The template's actual code currently uses the singular. Bring the code into alignment with the docs before writing the docs that describe it.
+
+**Files:**
+- Rename: `src/app/_layout/` → `src/app/_layouts/`
+- Modify: `src/app/layout.tsx` (lines 18–20 imports)
+
+- [ ] **Step 1: Verify current state**
+
+```bash
+ls src/app/_layout/
+```
+
+Expected: `Contents.tsx  Footer.tsx  Header.tsx` (three files, no others).
+
+```bash
+grep -n "'./_layout/" src/app/layout.tsx
+```
+
+Expected: three matches — lines importing `./_layout/Contents`, `./_layout/Footer`, `./_layout/Header`.
+
+If there are additional files in `_layout/` or additional imports elsewhere in src/, stop and flag — the rename scope changed.
+
+- [ ] **Step 2: Rename the folder**
+
+```bash
+git mv src/app/_layout src/app/_layouts
+```
+
+(`git mv` preserves history, unlike a plain `mv`.)
+
+- [ ] **Step 3: Update the imports in `src/app/layout.tsx`**
+
+In `src/app/layout.tsx`, replace these three lines:
+
+```ts
+import Contents from './_layout/Contents';
+import Footer from './_layout/Footer';
+import Header from './_layout/Header';
+```
+
+with:
+
+```ts
+import Contents from './_layouts/Contents';
+import Footer from './_layouts/Footer';
+import Header from './_layouts/Header';
+```
+
+- [ ] **Step 4: Verify no stale references remain**
+
+```bash
+grep -rn "_layout/" src 2>/dev/null
+```
+
+Expected: no output (every `_layout/` reference should now be `_layouts/`).
+
+```bash
+grep -rn "_layouts/" src 2>/dev/null | head -5
+```
+
+Expected: the three updated imports in `src/app/layout.tsx` (and possibly the file listing of `src/app/_layouts/`).
+
+- [ ] **Step 5: Build sanity check**
+
+```bash
+yarn lint
+```
+
+Expected: no errors. If the rename broke imports, ESLint surfaces it.
+
+- [ ] **Step 6: Commit**
+
+```bash
+git add src/app/_layouts src/app/layout.tsx
+git commit -m "$(cat <<'EOF'
+refactor: src/app/_layout/ 를 src/app/_layouts/ 로 rename
+
+docs/agents/structure.md 가 채택하는 _layouts/ (복수) 표기에
+실제 코드를 정렬한다. layout.tsx 의 import 3줄 동시 수정.
+
+Spec: docs/superpowers/specs/2026-06-03-agents-md-split-design.md (§2.1 A)
+
+Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>
+EOF
+)"
+```
+
+이 커밋은 spec §7 의 3-커밋 정책과 별도. docs 작업 전에 코드 base 를 정렬하기 위한 선행 커밋.
+
+---
+
 ## Task 1: Create directory skeleton
 
 **Files:**
