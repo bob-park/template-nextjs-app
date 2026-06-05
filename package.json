@@ -1,6 +1,6 @@
 {
   "name": "template-nextjs-app",
-  "version": "0.0.0-rc1-20260514",
+  "version": "0.0.0-rc1-20260605",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -49,6 +49,7 @@
     "eslint": "^9",
     "miragejs": "^0.1.48",
     "postcss": "^8.5.15",
+    "prettier": "^3",
     "react-icons": "^5.6.0",
     "tailwindcss": "^4",
     "typescript": "^5"
