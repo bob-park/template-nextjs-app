@@ -134,19 +134,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@bob-park/prettier-config-bobpark@npm:0.3.2-RC2-20260605":
-  version: 0.3.2-RC2-20260605
-  resolution: "@bob-park/prettier-config-bobpark@npm:0.3.2-RC2-20260605::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40bob-park%2Fprettier-config-bobpark%2F0.3.2-RC2-20260605%2Fcc14fa24aadf48b1d02c190792ccfe01d80cd95b"
+"@bob-park/prettier-config-bobpark@npm:0.4.0-RC1-20260630":
+  version: 0.4.0-RC1-20260630
+  resolution: "@bob-park/prettier-config-bobpark@npm:0.4.0-RC1-20260630::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40bob-park%2Fprettier-config-bobpark%2F0.4.0-RC1-20260630%2F8d7b747beb9454dfd032906a538e0936251cb676"
   dependencies:
     "@trivago/prettier-plugin-sort-imports": "npm:^6.0.2"
     eslint-plugin-prettier: "npm:^5.5.6"
-    prettier: "npm:^3.8.3"
-    prettier-plugin-tailwindcss: "npm:^0.7.2"
+    prettier: "npm:^3.9.3"
+    prettier-plugin-tailwindcss: "npm:^0.8.0"
   peerDependencies:
     eslint: ">= 9"
     prettier: ">= 3"
-    typescript: ">= 5"
-  checksum: 10c0/2b12641e75d91d7cbd66be69aad9eb13c6755af82429691718d69760dc8b0b7fe9a8b0c682888c8f53c8a6c076f0c9126a5b7bedee4cf368c892409c0ff53cb8
+    typescript: ">= 6"
+  checksum: 10c0/a06e7993352edcab7bb1795e6f8b2d185cd343ad70cad07d08457b0071f83ec4fb383ca4932401fccf555378c4a9b20b53ec6ed4bbcce014b02742a9ae91e887
   languageName: node
   linkType: hard
 
@@ -5110,9 +5110,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier-plugin-tailwindcss@npm:^0.7.2":
-  version: 0.7.4
-  resolution: "prettier-plugin-tailwindcss@npm:0.7.4"
+"prettier-plugin-tailwindcss@npm:^0.8.0":
+  version: 0.8.0
+  resolution: "prettier-plugin-tailwindcss@npm:0.8.0"
   peerDependencies:
     "@ianvs/prettier-plugin-sort-imports": "*"
     "@prettier/plugin-hermes": "*"
@@ -5164,11 +5164,11 @@ __metadata:
       optional: true
     prettier-plugin-svelte:
       optional: true
-  checksum: 10c0/c1e1e486dabcddb470025285236cf941045243e1e2eb122cc4b80dd5e33d57be314b3a5ceb0f39fdddbf491097bb09f5904f494eb851ec3476c6fe41f69a5a94
+  checksum: 10c0/03315d1d5d4c425e3f090bd49fcc59159035839931ee8dcaa771720159f8209dd663aa78abc77473b68a425b4ad0b3dd02d79df149edf36a557ef9d43624c098
   languageName: node
   linkType: hard
 
-"prettier@npm:^3, prettier@npm:^3.8.3":
+"prettier@npm:^3":
   version: 3.8.3
   resolution: "prettier@npm:3.8.3"
   bin:
@@ -5177,7 +5177,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^3.6.2":
+"prettier@npm:^3.6.2, prettier@npm:^3.9.3":
   version: 3.9.3
   resolution: "prettier@npm:3.9.3"
   bin:
@@ -5975,7 +5975,7 @@ __metadata:
   resolution: "template-nextjs-app@workspace:."
   dependencies:
     "@bob-park/eslint-config-bobpark": "npm:0.3.0-RC4-20260630"
-    "@bob-park/prettier-config-bobpark": "npm:0.3.2-RC2-20260605"
+    "@bob-park/prettier-config-bobpark": "npm:0.4.0-RC1-20260630"
     "@eslint/eslintrc": "npm:^3"
     "@faker-js/faker": "npm:^10.5.0"
     "@stomp/stompjs": "npm:^7.3.0"
