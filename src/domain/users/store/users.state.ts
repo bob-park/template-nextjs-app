@@ -6,3 +6,5 @@ type UserState = {
   updateShowRemoveUserModal: (show: boolean) => void;
   updateShowRestoreUserModal: (show: boolean) => void;
 };
+
+export type { UserState };

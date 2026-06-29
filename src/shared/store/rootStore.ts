@@ -1,4 +1,5 @@
 import createUserSlice from '@/domain/users/store/slice';
+import { UserState } from '@/domain/users/store/users.state';
 
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
