@@ -4,6 +4,7 @@ import { checkUserId, getMe, getUser, getUsers, register, removeUser, restoreUse
 import { User, UserRegisterRequest, UserSearchRequest } from '@/domain/users/apis/users.dto';
 import { getNextPageParams } from '@/shared/api';
 import { PageRequest, PagedModel } from '@/shared/api/common.dto';
+import { QueryMutationHandle } from '@/shared/queries';
 
 export function useMe() {
   const { data } = useQuery<User>({
@@ -71,7 +72,7 @@ export function useUserRegister({ onSuccess, onError }: QueryMutationHandle<User
       await queryClient.invalidateQueries({ queryKey: ['users'] });
     },
     onError: (err) => {
-      onError?.(err);
+      onError?.(err.data);
     },
   });
 
@@ -90,7 +91,7 @@ export function useUserRemove({ onSuccess, onError }: QueryMutationHandle<User>)
       onSuccess?.(data);
     },
     onError: (err) => {
-      onError?.(err);
+      onError?.(err.data);
     },
   });
 
@@ -109,7 +110,7 @@ export function useUserRestore({ onSuccess, onError }: QueryMutationHandle<User>
       onSuccess?.(data);
     },
     onError: (err) => {
-      onError?.(err);
+      onError?.(err.data);
     },
   });
 

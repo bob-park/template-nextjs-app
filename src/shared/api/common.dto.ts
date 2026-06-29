@@ -27,4 +27,17 @@ type PageRequest = {
   sort?: string;
 };
 
-export type { SearchPageParams, PageRequest, PageMetadata, PagedModel };
+/**
+ * ProblemDetail
+ */
+type ProblemDetail = {
+  type: string;
+  title: string;
+  status: number;
+  detail: string;
+  code: string;
+  timestamp: Date;
+  exception: string;
+};
+
+export type { SearchPageParams, PageRequest, PageMetadata, PagedModel, ProblemDetail };

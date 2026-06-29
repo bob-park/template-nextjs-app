@@ -9,12 +9,12 @@ related:
 
 # File Naming
 
-> DTO `*.dto.ts`, ambient `types.d.ts`, 컴포넌트 `PascalCase.tsx`, hook `useXxx.tsx`, 도메인 fetcher `<domain>.ts` (sub-resource 는 `<domain><SubResource>.ts`).
+> DTO `*.dto.ts`, ambient `index.ts`, 컴포넌트 `PascalCase.tsx`, hook `useXxx.tsx`, 도메인 fetcher `<domain>.ts` (sub-resource 는 `<domain><SubResource>.ts`).
 
 ## Basic rules
 
 - API request/response types: `*.dto.ts` (e.g. `users.dto.ts`).
-- Ambient global types (no `export`): `types.d.ts`.
+- Ambient global types (no `export`): `index.ts`.
 - React components: `PascalCase.tsx`. Hooks: `useXxx.tsx`.
 - Domain API fetcher files: lowercase domain name (e.g. `users.ts`).
 
