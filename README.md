@@ -8,7 +8,7 @@
 
 ## Spec
 
-- typescript 5
+- typescript 6
 - eslint 9
 - prettier
 - nextjs 16
