@@ -1,5 +1,5 @@
-import { BoundState } from '@/shared/store/rootStore';
 import { UserState } from '@/domain/users/store/users.state';
+import { BoundState } from '@/shared/store/rootStore';
 
 import { SlicePattern } from 'zustand';
 
