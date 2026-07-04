@@ -17,6 +17,22 @@ const index = ky.extend({
   },
 });
 
+export function toSearchParams(req: Record<string, unknown>) {
+  const searchParams = new URLSearchParams();
+
+  Object.entries(req).forEach(([key, value]) => {
+    if (value === undefined || value === null) return;
+
+    if (Array.isArray(value)) {
+      value.forEach((item) => searchParams.append(key, String(item)));
+    } else {
+      searchParams.append(key, String(value));
+    }
+  });
+
+  return searchParams;
+}
+
 export function getNextPageParams<T>(lastPage: PagedModel<T>, sort?: string) {
   const { totalPages, number, size } = lastPage.page;
 

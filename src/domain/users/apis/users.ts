@@ -1,5 +1,5 @@
 import { User, UserRegisterRequest, UserSearchRequest } from '@/domain/users/apis/users.dto';
-import api from '@/shared/api';
+import api, { toSearchParams } from '@/shared/api';
 import { PageRequest, PagedModel } from '@/shared/api/common.dto';
 import delay from '@/utils/delay';
 
@@ -8,7 +8,7 @@ export async function getMe() {
 }
 
 export async function getUsers(params: UserSearchRequest & PageRequest) {
-  return api.get('/api/users', { searchParams: params }).json<PagedModel<User>>();
+  return api.get('/api/users', { searchParams: toSearchParams(params) }).json<PagedModel<User>>();
 }
 
 export async function getUser(id: string) {
