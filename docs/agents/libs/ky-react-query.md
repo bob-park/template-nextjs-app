@@ -14,8 +14,11 @@ related:
 
 ## Client-side: shared `api` (ky)
 
-- Use the shared `api` instance from `@/shared/api`. It auto-redirects on 401 to `/api/oauth2/authorization/keyflow-auth` (the `KeyFlow` login flow).
-- The shared `api` is **browser-only** — it relies on `location.href` for the redirect.
+- Use the shared `api` instance from `@/shared/api`. Requests target `/api/**`, which the
+  catch-all proxy (`src/app/api/[...path]/route.ts`) forwards to `API_HOST` after attaching
+  the access token server-side — the browser never sees the token.
+- Unauthenticated requests receive `401` from the proxy; page navigation without a session is
+  redirected to `/login` by the session guard (`src/proxy.ts`).
 - React Query keys follow `[domain, ...specifier]`:
   - `['users']`, `['users', id]`, `['users', 'check', userId]`, `['users', 'register']`, etc.
   - Sub-resource keys nest the sub-resource name: `['sessions', 'chairs', sessionId]`, `['sessions', 'reviewers', sessionId, id]`.
@@ -30,18 +33,23 @@ Server Components, Route Handlers, and `generateMetadata` cannot use the shared 
 ```tsx
 // src/app/(selected)/conferences/[id]/layout.tsx
 import { cache } from 'react';
-import { cookies } from 'next/headers';
+import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
 
 import { Conference } from '@/domain/conferences/apis/conferences.dto';
+import { auth } from '@/shared/auth';
 
-const { WEB_SERVICE_HOST } = process.env;
-const COOKIE_ACCESS_TOKEN = 'auth-token';
+const { API_HOST } = process.env;
 
-const getConference = cache(async ({ id, authToken }: { id: string; authToken: string }) => {
-  const response = await fetch(`${WEB_SERVICE_HOST}/conferences/${id}`, {
+const getConference = cache(async (id: string) => {
+  const { accessToken } = await auth.api.getAccessToken({
+    body: { providerId: 'keyflow-auth' },
+    headers: await headers(),
+  });
+
+  const response = await fetch(`${API_HOST}/api/v1/conferences/${id}`, {
     method: 'get',
-    headers: { Cookie: `${COOKIE_ACCESS_TOKEN}=${authToken}` },
+    headers: { Authorization: `Bearer ${accessToken}` },
   });
 
   if (!response.ok) {
@@ -52,19 +60,17 @@ const getConference = cache(async ({ id, authToken }: { id: string; authToken: s
 });
 
 export default async function ConferenceLayout({ params }: { params: Promise<{ id: string }> }) {
-  const cookieStore = await cookies();
   const { id } = await params;
-  const accessToken = cookieStore.get(COOKIE_ACCESS_TOKEN)?.value || '';
 
-  const conference = await getConference({ id, authToken: accessToken });
+  const conference = await getConference(id);
   // ...
 }
 ```
 
 규칙:
 
-- `${WEB_SERVICE_HOST}/...` 로 KeyFlow internal BFF endpoint 를 직접 호출한다 (server-to-server).
-- Cookie 는 `next/headers` 의 `cookies()` 에서 읽어 fetch 의 `Cookie` 헤더에 직접 첨부 — browser 의 자동 cookie 전송에 의존하지 않는다.
+- `${API_HOST}/...` 를 직접 호출한다 (server-to-server) — client 용 `/api/**` proxy 를 거치지 않는다.
+- access token 은 better-auth 의 `auth.api.getAccessToken` (`@/shared/auth`) 으로 조회하여 `Authorization: Bearer` 헤더로 첨부 — cookie 전달에 의존하지 않는다.
 - `cache(...)` 로 wrap 하면 같은 request lifecycle 안에서 동일 인자 호출이 한 번만 실행된다 (예: layout + page 가 같은 데이터를 부르더라도 fetch 1회).
 - 실패 시 `notFound()` / `forbidden()` 등 Next.js navigation 함수를 직접 호출해 special file (`not-found.tsx`, `forbidden.tsx`) 로 분기.
 

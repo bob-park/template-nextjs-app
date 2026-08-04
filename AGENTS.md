@@ -10,7 +10,7 @@ frontmatter (`title`, `scope`, `applies_to`, `related`) 와 TL;DR blockquote 로
 ## Map
 
 ### Foundations
-- [Project Overview](docs/agents/overview.md) — KeyFlow BFF Next.js 템플릿의 목적과 경계
+- [Project Overview](docs/agents/overview.md) — KeyFlow 연동 (better-auth) Next.js 템플릿의 목적과 경계
 - [Tech Stack](docs/agents/tech-stack.md) — 언어/프레임워크/라이브러리 핀 버전 위치
 - [Directory & Layout Rules](docs/agents/structure.md) — `src/` 트리, 도메인 추가 절차, `_layout/` 규칙
 
@@ -32,6 +32,23 @@ frontmatter (`title`, `scope`, `applies_to`, `related`) 와 TL;DR blockquote 로
 - [Dev Environment & Lint/Format](docs/agents/workflows/dev-env.md) — `mise`, `yarn`, lint 명령
 - [Git Workflow](docs/agents/workflows/git.md) — branch, commit prefix, PR base
 - [Build & Release](docs/agents/workflows/build-release.md) — Docker buildx bake, version pattern
+
+## Auth (better-auth)
+
+The app integrates directly with the KeyFlow Authorization Server via
+[better-auth](https://www.better-auth.com/) (`genericOAuth` plugin + PKCE).
+
+- `/login` and `/logout` are **route handlers** (`src/app/login/route.ts`,
+  `src/app/logout/route.ts`), not pages — they redirect immediately without
+  React rendering.
+- `/logout` performs the better-auth session signOut, then redirects to the
+  KeyFlow OIDC end session endpoint (`/connect/logout`) with `id_token_hint`.
+- `/api/**` goes through a catch-all proxy (`src/app/api/[...path]/route.ts`)
+  that resolves the access token server-side and forwards the request to
+  `API_HOST` with an `Authorization: Bearer` header — the access token is never
+  exposed to the browser.
+- better-auth config: `src/shared/auth/index.ts` (server),
+  `src/shared/auth/auth-client.ts` (client). Session guard: `src/proxy.ts`.
 
 ## How to use
 

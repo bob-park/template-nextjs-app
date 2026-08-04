@@ -1,8 +1,34 @@
 이 Repository 는 Next JS 에 설정이 모두 완료된 Repository 이다. (feat. Bob Park)
 
-## `KeyFlow Authroization Server` 연동
-기본적으로 `KeyFlow Authroization Server` 와 연동된 `Back-End For Front-End` 와 연동되어져 있다.
-로그인되어 있지 않는 경우 `login page` 로 `redirect` 
+## `KeyFlow Authorization Server` 연동 (better-auth)
+
+[better-auth](https://www.better-auth.com/) 의 `genericOAuth` plugin (PKCE) 을 사용하여
+`KeyFlow Authorization Server` 와 직접 연동한다.
+로그인되어 있지 않은 경우 `src/proxy.ts` 에서 `/login` 으로 `redirect` 한다.
+
+### login / logout — route handler
+
+`/login`, `/logout` 은 page 가 아닌 **route handler** (`src/app/login/route.ts`,
+`src/app/logout/route.ts`) 로 구현되어 있다. 실제 route 로 React rendering 하지 않고
+바로 redirect 된다.
+
+- `/login` — better-auth `signInWithOAuth2` 로 KeyFlow authorize URL 을 생성하여 redirect 한다.
+  `?callback=` query 로 로그인 후 이동할 경로를 지정할 수 있다.
+- `/logout` — better-auth session `signOut` 후, KeyFlow 의 OIDC end session endpoint
+  (`/connect/logout`) 로 `id_token_hint` 와 함께 redirect 하여 SSO session 까지 종료한다.
+
+### API proxy — access token 비노출
+
+browser 에는 access token 이 노출되지 않는다. `/api/**` 요청은 catch-all route handler
+(`src/app/api/[...path]/route.ts`) 가 server side 에서 better-auth 로부터 access token 을
+조회하여 `Authorization: Bearer` header 로 조립한 뒤 `API_HOST` 로 전달한다.
+session 이 없으면 `401` 을 응답한다.
+
+### 환경 변수 (.env)
+
+- `BETTER_AUTH_URL` / `BETTER_AUTH_SECRET` — better-auth 기본 설정
+- `KEYFLOW_AUTH_HOST` / `KEYFLOW_AUTH_CLIENT_ID` / `KEYFLOW_AUTH_CLIENT_SECRET` — KeyFlow OAuth client 설정
+- `API_HOST` — API proxy 대상 host
 
 
 
@@ -16,6 +42,7 @@
 - react-scan
 - react-icon
 - react-query (tanstack-query) 5
+- better-auth
 - tailwindcss 4
 - daisyui 5
 - zustand 5
@@ -47,8 +74,13 @@ mise ls
 ```text
 src
 ├── app # app router
-│   └── api # app api router
-│       └── health # health check api
+│   ├── api # app api router
+│   │   ├── [...path] # API proxy (server side 에서 access token 조립 후 API_HOST 로 전달)
+│   │   ├── auth
+│   │   │   └── [...all] # better-auth handler
+│   │   └── health # health check api
+│   ├── login # route handler — rendering 없이 KeyFlow authorize 로 redirect
+│   └── logout # route handler — session signout + OIDC end session
 ├── domain # domain
 │   └── users
 │       ├── apis # api request
@@ -57,6 +89,7 @@ src
 │       └── store # zustand store
 ├── shared
 │   ├── api
+│   ├── auth # better-auth 설정 (server) + auth-client (client)
 │   ├── components
 │   │   ├── queries
 │   │   ├── scan
@@ -159,6 +192,75 @@ PR 제목에 `xxx [minor]` 인 경우 minor 버전이 `+1` 된다.
 
 #### patch
 PR 제목에 `xxx` 인 경우 patch 버전이 `+1` 된다. 단, 같은 날인 경우 rc[index] 가 `+1` 된다.
+
+
+## Server Action 사용 시 주의 (reverse proxy)
+
+Next.js Server Action 은 요청의 `Origin` 과 `Host`(또는 `X-Forwarded-Host`) 가 일치해야 동작한다.
+reverse proxy 뒤에서 구동하는 경우, 반드시 `NGINX` 를 사용해서 `X-Forwarded-Host` 에 실제 요청
+host 를 넣어야 한다. 누락 시 Server Action 요청이 차단된다. (`Invalid Server Actions request`)
+
+예시는 아래와 같다. (환경: Docker Container)
+
+```yaml
+# docker-compose.yml
+services:
+  web:
+    image: ghcr.io/bob-park/web
+  proxy:
+    image: nginx
+    ports:
+      - '80:80'
+    environment:
+      - WEB_DOMAIN=bob.org
+      - WEB_HOST=http://web:3000
+      - WS_HOST=http://web:3000
+    volumes:
+      - ./default.conf.template:/etc/nginx/templates/default.conf.template
+    depends_on:
+      web:
+        condition: service_healthy
+```
+
+```nginx
+# default.conf.template
+
+log_format  proxy_log  '[$time_local] $remote_addr - $remote_user "$host$request_uri" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"'
+                      ' Proxy: "$proxy_host" "$upstream_addr"';
+
+server {
+
+    access_log  /var/log/nginx/access.log proxy_log;
+
+    listen       80;
+    server_name  web;
+
+    sendfile        on;
+    keepalive_timeout  0;
+
+    location / {
+        rewrite (/.*)$ $1 break;
+        proxy_pass ${WEB_HOST};
+        proxy_redirect off;
+        proxy_set_header  Host              $http_host;   # required for docker client's sake
+        proxy_set_header  X-Real-IP         $remote_addr; # pass on real client's IP
+        proxy_set_header  X-Forwarded-For   $proxy_add_x_forwarded_for;
+        proxy_set_header  X-Forwarded-Proto $scheme;
+        proxy_set_header  X-Forwarded-Host  ${WEB_DOMAIN};
+    }
+
+    location /api/v1/ws {
+        proxy_pass ${WS_HOST};
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "Upgrade";
+        proxy_set_header Host $host;
+    }
+
+}
+```
 
 
 ## Build

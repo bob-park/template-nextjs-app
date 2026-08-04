@@ -9,6 +9,6 @@ related:
 
 # Project Overview
 
-> Next.js application template integrated with the **KeyFlow Authorization Server** through a **Back-End For Front-End (BFF)** layer.
+> Next.js application template integrated directly with the **KeyFlow Authorization Server** via **better-auth** (`genericOAuth` + PKCE).
 
 Requests without a valid session are redirected to the login page. The repository ships a pre-configured baseline so new product apps can start from a consistent stack.
