@@ -1,21 +1,10 @@
 import { InfiniteData, QueryKey, useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-import { checkUserId, getMe, getUser, getUsers, register, removeUser, restoreUser } from '@/domain/users/apis/users';
+import { getUser, getUsers, register, removeUser, restoreUser } from '@/domain/users/apis/users';
 import { User, UserRegisterRequest, UserSearchRequest } from '@/domain/users/apis/users.dto';
 import { getNextPageParams } from '@/shared/api';
 import { PageRequest, PagedModel } from '@/shared/api/common.dto';
 import { QueryMutationHandle } from '@/shared/queries';
-
-export function useMe() {
-  const { data } = useQuery<User>({
-    queryKey: ['me'],
-    queryFn: () => getMe(),
-    staleTime: 1_000 * 60 * 5,
-    gcTime: 1_000 * 60 * 10,
-  });
-
-  return { me: data };
-}
 
 export function useUsers(params: UserSearchRequest & PageRequest) {
   const { data, fetchNextPage, isLoading, refetch } = useInfiniteQuery<
@@ -115,14 +104,4 @@ export function useUserRestore({ onSuccess, onError }: QueryMutationHandle<User>
   });
 
   return { restoreUser: mutate, isLoading: isPending };
-}
-
-export function useUserExistId(userId: string) {
-  const { data, isPending } = useQuery<{ exist: boolean }>({
-    queryKey: ['users', 'check', userId],
-    queryFn: () => checkUserId(userId),
-    enabled: !!userId,
-  });
-
-  return { exist: data?.exist || false, isLoading: isPending };
 }

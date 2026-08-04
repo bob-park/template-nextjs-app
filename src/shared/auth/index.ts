@@ -1,0 +1,39 @@
+import { betterAuth } from 'better-auth';
+import { nextCookies } from 'better-auth/next-js';
+import { genericOAuth } from 'better-auth/plugins';
+
+const { KEYFLOW_AUTH_HOST, KEYFLOW_CLIENT_ID, KEYFLOW_CLIENT_SECRENT } = process.env;
+
+export const auth = betterAuth({
+  user: {
+    additionalFields: {
+      sub: {
+        type: 'string',
+        required: true,
+      },
+      userId: {
+        type: 'string',
+        required: true,
+      },
+      role: {
+        type: 'string',
+        required: true,
+      },
+    },
+  },
+  plugins: [
+    genericOAuth({
+      config: [
+        {
+          providerId: 'keyflow-auth',
+          clientId: KEYFLOW_CLIENT_ID || '',
+          clientSecret: KEYFLOW_CLIENT_SECRENT,
+          pkce: true,
+          discoveryUrl: `${KEYFLOW_AUTH_HOST}/.well-known/openid-configuration`,
+          scopes: ['openid', 'profile', 'users:read:summary'],
+        },
+      ],
+    }),
+    nextCookies(),
+  ],
+});

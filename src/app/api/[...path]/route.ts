@@ -1,0 +1,43 @@
+import { headers } from 'next/headers';
+import { NextRequest, NextResponse } from 'next/server';
+
+import { auth } from '@/shared/auth';
+
+const { API_HOST } = process.env;
+
+async function proxy(req: NextRequest) {
+  const nextHeaders = await headers();
+
+  let accessToken: string;
+
+  try {
+    const token = await auth.api.getAccessToken({
+      body: { providerId: 'keyflow-auth' },
+      headers: nextHeaders,
+    });
+    accessToken = token.accessToken;
+  } catch {
+    return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
+  }
+
+  const { pathname, search } = req.nextUrl;
+
+  const url = new URL(`${API_HOST}${pathname}`);
+  url.search = search;
+
+  const res = await fetch(url, {
+    method: req.method,
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': req.headers.get('Content-Type') ?? 'application/json',
+    },
+    body: ['GET', 'HEAD'].includes(req.method) ? undefined : req.body,
+  });
+
+  return new NextResponse(res.body, {
+    status: res.status,
+    headers: { 'Content-Type': res.headers.get('Content-Type') ?? 'application/json' },
+  });
+}
+
+export { proxy as POST, proxy as GET, proxy as PUT, proxy as DELETE };

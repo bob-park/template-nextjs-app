@@ -1,29 +1,31 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import { headers } from 'next/headers';
+import { NextRequest, NextResponse } from 'next/server';
 
-const COOKIE_NAME_TOKEN = 'auth-token';
+import { auth } from '@/shared/auth';
 
-export async function proxy(request: NextRequest) {
-  const cookies = request.cookies;
-  const { host, pathname, search, protocol } = request.nextUrl;
+const IGNORE_PATH_PATTERNS = [/^\/login/, /^\/logout/];
 
-  const hostUrl = `${protocol}//${host}`;
-  const redirectUrl = encodeURIComponent(`${pathname}${search}`);
+export async function proxy(req: NextRequest) {
+  const { pathname, search } = req.nextUrl;
 
-  const res = await fetch(`${hostUrl}/api/users/me`, {
-    method: 'get',
-    headers: {
-      Cookie: `${COOKIE_NAME_TOKEN}=${cookies.get(COOKIE_NAME_TOKEN)?.value || ''}`,
-    },
-  });
+  console.log(pathname);
 
-  if (!res.ok) {
-    return NextResponse.redirect(new URL(`/api/login?redirectUrl=${redirectUrl}`, request.url));
+  if (IGNORE_PATH_PATTERNS.some((p) => p.test(pathname))) {
+    return NextResponse.next();
   }
 
+  const callback = encodeURIComponent(`${pathname}${search}`);
+
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session) {
+    return NextResponse.redirect(new URL(`/login?callback=${callback}`, req.url));
+  }
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico|oauth2).*)'],
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
 };

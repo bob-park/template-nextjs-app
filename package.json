@@ -12,6 +12,7 @@
   "dependencies": {
     "@stomp/stompjs": "^7.3.0",
     "@tanstack/react-query": "^5.101.2",
+    "better-auth": "^1.6.25",
     "classnames": "^2.5.1",
     "dayjs": "^1.11.21",
     "immer": "^11.1.8",

@@ -4,7 +4,9 @@ import { cookies } from 'next/headers';
 
 import { HydrationBoundary, QueryClient, dehydrate } from '@tanstack/react-query';
 
-import { User } from '@/domain/users/apis/users.dto';
+import Contents from '@/app/_layouts/Contents';
+import Footer from '@/app/_layouts/Footer';
+import Header from '@/app/_layouts/Header';
 import RQProvider from '@/shared/components/queries/RQProvider';
 import ToastProvider from '@/shared/components/toast/ToastProvider';
 import { LOCALE_META } from '@/shared/i18n/config';
@@ -15,15 +17,9 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations } from 'next-intl/server';
 import { OverlayProvider } from 'overlay-kit';
 
-import Contents from './_layouts/Contents';
-import Footer from './_layouts/Footer';
-import Header from './_layouts/Header';
 import './globals.css';
 
-const { WEB_SERVICE_HOST } = process.env;
-
 const COOKIE_NAME_THEME = 'theme';
-const COOKIE_NAME_TOKEN = 'auth-token';
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations('metadata');
@@ -47,19 +43,6 @@ export default async function RootLayout({
   const htmlLang = LOCALE_META[locale].htmlLang;
 
   const queryClient = new QueryClient();
-
-  const res = await fetch(`${WEB_SERVICE_HOST}/users/me`, {
-    method: 'get',
-    headers: {
-      Cookie: `${COOKIE_NAME_TOKEN}=${cookieStore.get(COOKIE_NAME_TOKEN)?.value || ''}`,
-    },
-  });
-
-  let user;
-
-  if (res.ok) {
-    user = (await res.json()) as User;
-  }
 
   const dehydratedState = dehydrate(queryClient);
 
