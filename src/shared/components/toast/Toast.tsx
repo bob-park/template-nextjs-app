@@ -82,6 +82,7 @@ export default function Toast({ message, timeout, onRemove }: Readonly<ToastProp
         <p className="text-sm text-pretty break-keep text-[#4d4d4d] dark:text-[#cbcbcb]">{message.message}</p>
       </div>
       <button
+        aria-label="Close"
         className="flex-none cursor-pointer p-0.5 text-[#6a6a6a] dark:text-[#b3b3b3]"
         type="button"
         onClick={handleClose}
@@ -89,6 +90,7 @@ export default function Toast({ message, timeout, onRemove }: Readonly<ToastProp
         <IoClose className="size-4" />
       </button>
       <div className="absolute inset-x-0 bottom-0 h-[3px] bg-black/8 dark:bg-white/8">
+        {/* animation 은 class, duration 만 inline — shorthand 를 inline 으로 합치면 animation-play-state:running 이 인라인으로 박혀 hover pause 가 깨진다 */}
         <div
           className={cx(
             'h-full animate-[toast-shrink_linear_forwards] group-hover:[animation-play-state:paused]',
