@@ -66,7 +66,7 @@ export default function Toast({ message, timeout, onRemove }: Readonly<ToastProp
         'bg-[#fdfdfd] text-[#181818] shadow-[0_8px_24px_rgba(0,0,0,0.18)]',
         'dark:bg-[#181818] dark:text-white dark:shadow-[0_8px_24px_rgba(0,0,0,0.5)]',
         'animate-[toast-in_0.35s_cubic-bezier(0.2,0.9,0.3,1)]',
-        'transition-[opacity,transform] duration-300',
+        'transition-[opacity,translate] duration-300',
         { 'translate-x-6 opacity-0': isLeaving },
       )}
       role="alert"
@@ -90,8 +90,11 @@ export default function Toast({ message, timeout, onRemove }: Readonly<ToastProp
       </button>
       <div className="absolute inset-x-0 bottom-0 h-[3px] bg-black/8 dark:bg-white/8">
         <div
-          className={cx('h-full group-hover:[animation-play-state:paused]', levelStyle.bar)}
-          style={{ animation: `toast-shrink ${timeout}s linear forwards` }}
+          className={cx(
+            'h-full animate-[toast-shrink_linear_forwards] group-hover:[animation-play-state:paused]',
+            levelStyle.bar,
+          )}
+          style={{ animationDuration: `${timeout}s` }}
           onAnimationEnd={handleClose}
         />
       </div>
