@@ -7,7 +7,7 @@ agents (see `CLAUDE.md` → "Design Prompt 템플릿 위치").
 
 ## Templates
 
-- [`example.md`](./example.md) — 디자인 시스템 분석 / 추출 prompt 예시.
+- [`spotify-design.md`](spotify-design.md) — 디자인 시스템 분석 / 추출 prompt 예시.
   새 템플릿 작성 시 형식 참고.
 
 새 템플릿을 추가하면 본 README 의 목록도 함께 업데이트한다.
