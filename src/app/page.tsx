@@ -1,14 +1,27 @@
 'use client';
 
-import { useUsers } from '@/domain/users/queries/users';
+import { use, useContext } from 'react';
+
+import { useUser } from '@/domain/users/queries/users';
 import { authClient } from '@/shared/auth/auth-client';
+import { ToastContext } from '@/shared/components/toast/ToastProvider';
 
 export default function Home() {
+  // context
+  const { push } = use(ToastContext);
+
   // hooks
   const { data, isPending } = authClient.useSession();
 
   // queries
-  const { users } = useUsers({ page: 0, size: 10 });
+  const { user } = useUser(data?.user.sub || '', isPending);
+
+  console.log(user);
+
+  // handle
+  const handlePushClick = () => {
+    push('username:' + user?.username, 'info');
+  };
 
   return (
     <div className="size-full">
@@ -17,6 +30,11 @@ export default function Home() {
         <a className="btn" href="/logout">
           logout
         </a>
+      </div>
+      <div>
+        <button className="btn" onClick={handlePushClick}>
+          push
+        </button>
       </div>
     </div>
   );

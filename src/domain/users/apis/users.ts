@@ -4,11 +4,11 @@ import { PageRequest, PagedModel } from '@/shared/api/common.dto';
 import delay from '@/utils/delay';
 
 export async function getUsers(params: UserSearchRequest & PageRequest) {
-  return api.get('/api/v1//users', { searchParams: toSearchParams(params) }).json<PagedModel<User>>();
+  return api.get('/api/v1//users/summary', { searchParams: toSearchParams(params) }).json<PagedModel<User>>();
 }
 
 export async function getUser(id: string) {
-  return api.get(`/api/v1/users/${id}`).json<User>();
+  return api.get(`/api/v1/users/${id}/summary`).json<User>();
 }
 
 export async function register(req: UserRegisterRequest) {

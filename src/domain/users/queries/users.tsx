@@ -40,10 +40,11 @@ export function useUsers(params: UserSearchRequest & PageRequest) {
   return { isLoading, fetchNextPage, refetch, users, page };
 }
 
-export function useUser(id: string) {
+export function useUser(id: string, enabled?: boolean) {
   const { data, isLoading } = useQuery<User>({
     queryKey: ['users', id],
     queryFn: () => getUser(id),
+    enabled: !enabled,
   });
 
   return { user: data, isLoading };
