@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { FaCheckCircle } from 'react-icons/fa';
 import { IoClose, IoWarning } from 'react-icons/io5';
@@ -21,59 +21,80 @@ interface ToastIconProps {
   level: MessageLevel;
 }
 
+const LEVEL_STYLES: Record<MessageLevel, { label: string; text: string; bar: string }> = {
+  success: { label: 'Success', text: 'text-[#14a94b] dark:text-[#1ed760]', bar: 'bg-[#14a94b] dark:bg-[#1ed760]' },
+  error: { label: 'Error', text: 'text-[#dc4657] dark:text-[#f3727f]', bar: 'bg-[#dc4657] dark:bg-[#f3727f]' },
+  warning: { label: 'Warning', text: 'text-[#d97706] dark:text-[#ffa42b]', bar: 'bg-[#d97706] dark:bg-[#ffa42b]' },
+  info: { label: 'Info', text: 'text-[#2f7fd9] dark:text-[#539df5]', bar: 'bg-[#2f7fd9] dark:bg-[#539df5]' },
+  message: { label: 'Message', text: 'text-[#181818] dark:text-white', bar: 'bg-[#181818] dark:bg-white' },
+};
+
 function ToastIcon({ level }: Readonly<ToastIconProps>) {
   switch (level) {
     case 'warning':
-      return <IoWarning className="h-6 w-6 text-orange-600" />;
+      return <IoWarning className="size-5" />;
     case 'success':
-      return <FaCheckCircle className="h-6 w-6 text-green-500" />;
+      return <FaCheckCircle className="size-5" />;
     case 'error':
-      return <RiErrorWarningFill className="h-6 w-6 text-red-500" />;
+      return <RiErrorWarningFill className="size-5" />;
     case 'message':
-      return <TbMessageFilled className="h-6 w-6 text-black" />;
+      return <TbMessageFilled className="size-5" />;
     default:
-      return <RiInformationLine className="h-6 w-6 text-sky-500" />;
+      return <RiInformationLine className="size-5" />;
   }
 }
 
 export default function Toast({ message, timeout, onRemove }: Readonly<ToastProps>) {
   // useState
-  const [isShow, setIsShow] = useState<boolean>(false);
+  const [isLeaving, setIsLeaving] = useState<boolean>(false);
 
-  // useEffect
-  useEffect(() => {
-    setTimeout(() => setIsShow(true), 0);
-
-    setTimeout(() => {
-      setIsShow(false);
-    }, timeout * 1000);
-  }, []);
+  const levelStyle = LEVEL_STYLES[message.level];
 
   // handle
-  const handleRemove = () => {
-    onRemove && onRemove();
+  const handleClose = () => {
+    setIsLeaving(true);
+  };
+
+  const handleTransitionEnd = () => {
+    isLeaving && onRemove?.();
   };
 
   return (
     <div
       className={cx(
-        { 'translate-y-0 opacity-100': isShow },
-        { '-translate-y-3 opacity-0': !isShow },
-        'alert',
-        'shadow-lg',
-        'flex-none',
-        'w-[430px]',
-        'transition-[opacity,transform]',
+        'group relative flex w-[340px] items-start gap-3 overflow-hidden rounded-lg p-3.5 pb-4',
+        'bg-[#fdfdfd] text-[#181818] shadow-[0_8px_24px_rgba(0,0,0,0.18)]',
+        'dark:bg-[#181818] dark:text-white dark:shadow-[0_8px_24px_rgba(0,0,0,0.5)]',
+        'animate-[toast-in_0.35s_cubic-bezier(0.2,0.9,0.3,1)]',
+        'transition-[opacity,transform] duration-300',
+        { 'translate-x-6 opacity-0': isLeaving },
       )}
       role="alert"
+      onTransitionEnd={handleTransitionEnd}
     >
-      <ToastIcon level={message.level} />
-      <div>
-        <h3 className="w-full font-bold text-pretty break-keep">{message.message}</h3>
+      <span className={cx('mt-0.5 flex-none', levelStyle.text)}>
+        <ToastIcon level={message.level} />
+      </span>
+      <div className="min-w-0 flex-1">
+        <div className={cx('text-xs font-semibold tracking-[1.4px] uppercase', levelStyle.text)}>
+          {levelStyle.label}
+        </div>
+        <p className="text-sm text-pretty break-keep text-[#4d4d4d] dark:text-[#cbcbcb]">{message.message}</p>
       </div>
-      <button className="btn btn-circle btn-sm" type="button" onClick={handleRemove}>
-        <IoClose className="h-6 w-6" />
+      <button
+        className="flex-none cursor-pointer p-0.5 text-[#6a6a6a] dark:text-[#b3b3b3]"
+        type="button"
+        onClick={handleClose}
+      >
+        <IoClose className="size-4" />
       </button>
+      <div className="absolute inset-x-0 bottom-0 h-[3px] bg-black/8 dark:bg-white/8">
+        <div
+          className={cx('h-full group-hover:[animation-play-state:paused]', levelStyle.bar)}
+          style={{ animation: `toast-shrink ${timeout}s linear forwards` }}
+          onAnimationEnd={handleClose}
+        />
+      </div>
     </div>
   );
 }
