@@ -1,14 +1,10 @@
 'use client';
 
-import { ReactNode, createContext, useEffect, useMemo, useState } from 'react';
+import { ReactNode, createContext, useMemo, useState } from 'react';
 
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
 import { v4 as uuid } from 'uuid';
 
 import Toast from './Toast';
-
-dayjs.extend(relativeTime);
 
 export type MessageLevel = 'success' | 'warning' | 'error' | 'info' | 'message';
 
@@ -16,7 +12,6 @@ export interface ToastMessage {
   id: string;
   level: MessageLevel;
   message: string;
-  createdDate: Date;
 }
 
 interface ToastProviderContextState {
@@ -39,17 +34,6 @@ export default function ToastProvider({ children, limit, timeout }: Readonly<Toa
   // state
   const [messages, setMessages] = useState<ToastMessage[]>([]);
 
-  // useEffect
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      messages
-        .filter((item) => dayjs(item.createdDate).unix() < dayjs().unix() - timeout)
-        .forEach((item) => handleRemove(item.id));
-    }, 1_000);
-
-    return () => clearInterval(intervalId);
-  }, [messages]);
-
   // handle
   const handlePushMessage = (message: string, level: MessageLevel) => {
     setMessages((prev) => {
@@ -59,14 +43,11 @@ export default function ToastProvider({ children, limit, timeout }: Readonly<Toa
         newMessages.splice(newMessages.length - 1, 1);
       }
 
-      const createdMessage = {
+      newMessages.unshift({
         id: uuid(),
         level,
         message,
-        createdDate: new Date(),
-      };
-
-      newMessages.unshift(createdMessage);
+      });
 
       return newMessages;
     });
