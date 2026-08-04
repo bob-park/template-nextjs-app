@@ -26,9 +26,14 @@ session 이 없으면 `401` 을 응답한다.
 
 ### 환경 변수 (.env)
 
-- `BETTER_AUTH_URL` / `BETTER_AUTH_SECRET` — better-auth 기본 설정
-- `KEYFLOW_AUTH_HOST` / `KEYFLOW_AUTH_CLIENT_ID` / `KEYFLOW_AUTH_CLIENT_SECRET` — KeyFlow OAuth client 설정
-- `API_HOST` — API proxy 대상 host
+| 변수                         | 설명                                                        |
+| ---------------------------- | ----------------------------------------------------------- |
+| `BETTER_AUTH_URL`            | better-auth base URL (배포된 web 의 실제 URL)               |
+| `BETTER_AUTH_SECRET`         | better-auth secret                                          |
+| `KEYFLOW_AUTH_HOST`          | KeyFlow Authorization Server host                           |
+| `KEYFLOW_AUTH_CLIENT_ID`     | KeyFlow OAuth client id                                     |
+| `KEYFLOW_AUTH_CLIENT_SECRET` | KeyFlow OAuth client secret                                 |
+| `API_HOST`                   | API proxy 대상 host (`/api/**` 요청이 전달되는 backend API) |
 
 
 
@@ -192,6 +197,21 @@ PR 제목에 `xxx [minor]` 인 경우 minor 버전이 `+1` 된다.
 
 #### patch
 PR 제목에 `xxx` 인 경우 patch 버전이 `+1` 된다. 단, 같은 날인 경우 rc[index] 가 `+1` 된다.
+
+### 수동 version up (`bump-version.sh`)
+
+로컬에서 수동으로 version up 이 필요한 경우 `./bump-version.sh` 를 사용한다. (`jq` 필요)
+
+```bash
+./bump-version.sh [patch|minor|major|date]  # 기본값: patch
+```
+
+| 타입    | 동작                                                                          |
+| ------- | ----------------------------------------------------------------------------- |
+| `patch` | 같은 날짜면 `rc[index]` 만 `+1`, 다른 날짜면 patch `+1` 후 `rc1` 로 리셋      |
+| `minor` | 날짜와 무관하게 minor `+1`, patch 는 `0`, `rc1` 로 리셋                       |
+| `major` | 날짜와 무관하게 major `+1`, minor / patch 는 `0`, `rc1` 로 리셋               |
+| `date`  | 같은 날짜면 `rc[index]` 만 `+1`, 다른 날짜면 날짜만 갱신 후 `rc1` 로 리셋     |
 
 
 ## Server Action 사용 시 주의 (reverse proxy)

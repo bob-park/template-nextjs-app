@@ -62,26 +62,14 @@ case $update_type in
         fi
         ;;
     "minor")
-        if [ "$date_part" = "$today" ]; then
-            # 같은 날짜면 RC 번호만 증가
-            new_rc_num=$((rc_num + 1))
-            new_version="${major}.${minor}.${patch}-rc${new_rc_num}-${today}"
-        else
-            # 다른 날짜면 minor 버전 증가, patch는 0으로, RC는 1로 리셋
-            new_minor=$((minor + 1))
-            new_version="${major}.${new_minor}.0-rc1-${today}"
-        fi
+        # 날짜와 무관하게 minor 버전 증가, patch는 0으로, RC는 1로 리셋
+        new_minor=$((minor + 1))
+        new_version="${major}.${new_minor}.0-rc1-${today}"
         ;;
     "major")
-        if [ "$date_part" = "$today" ]; then
-            # 같은 날짜면 RC 번호만 증가
-            new_rc_num=$((rc_num + 1))
-            new_version="${major}.${minor}.${patch}-rc${new_rc_num}-${today}"
-        else
-            # 다른 날짜면 major 버전 증가, minor, patch는 0으로, RC는 1로 리셋
-            new_major=$((major + 1))
-            new_version="${new_major}.0.0-rc1-${today}"
-        fi
+        # 날짜와 무관하게 major 버전 증가, minor, patch는 0으로, RC는 1로 리셋
+        new_major=$((major + 1))
+        new_version="${new_major}.0.0-rc1-${today}"
         ;;
     "date")
         if [ "$date_part" = "$today" ]; then
