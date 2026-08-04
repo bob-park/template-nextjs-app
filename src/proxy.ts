@@ -6,23 +6,23 @@ import { auth } from '@/shared/auth';
 const IGNORE_PATH_PATTERNS = [/^\/login/, /^\/logout/];
 
 export async function proxy(req: NextRequest) {
-  const { pathname, search } = req.nextUrl;
-
-  console.log(pathname);
+  const { pathname, search, origin } = req.nextUrl;
 
   if (IGNORE_PATH_PATTERNS.some((p) => p.test(pathname))) {
     return NextResponse.next();
   }
-
-  const callback = encodeURIComponent(`${pathname}${search}`);
 
   const session = await auth.api.getSession({
     headers: await headers(),
   });
 
   if (!session) {
-    return NextResponse.redirect(new URL(`/login?callback=${callback}`, req.url));
+    const loginUrl = new URL('/login', origin);
+    loginUrl.searchParams.set('callback', `${pathname}${search}`);
+
+    return NextResponse.redirect(loginUrl);
   }
+
   return NextResponse.next();
 }
 

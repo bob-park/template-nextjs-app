@@ -32,7 +32,8 @@ async function proxy(req: NextRequest) {
       'Content-Type': req.headers.get('Content-Type') ?? 'application/json',
     },
     body: ['GET', 'HEAD'].includes(req.method) ? undefined : req.body,
-  });
+    duplex: 'half',
+  } as RequestInit & { duplex: 'half' });
 
   return new NextResponse(res.body, {
     status: res.status,
