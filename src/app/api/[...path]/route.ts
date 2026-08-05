@@ -1,21 +1,14 @@
-import { headers } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
-import { auth } from '@/shared/auth';
+import { getAccessToken } from '@/shared/auth/serverAction';
 
 const { API_HOST } = process.env;
 
 async function proxy(req: NextRequest) {
-  const nextHeaders = await headers();
-
   let accessToken: string;
 
   try {
-    const token = await auth.api.getAccessToken({
-      body: { providerId: 'keyflow-auth' },
-      headers: nextHeaders,
-    });
-    accessToken = token.accessToken;
+    accessToken = await getAccessToken();
   } catch {
     return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
   }
