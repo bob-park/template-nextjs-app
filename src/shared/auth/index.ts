@@ -6,6 +6,7 @@ const { KEYFLOW_AUTH_HOST, KEYFLOW_AUTH_CLIENT_ID, KEYFLOW_AUTH_CLIENT_SECRET } 
 
 export type Session = typeof auth.$Infer.Session;
 export type SessionUser = Session['user'];
+export const DEFAULT_PROVIDER_ID = 'keyflow-auth';
 
 export const auth = betterAuth({
   user: {
