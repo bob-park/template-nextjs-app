@@ -4,6 +4,9 @@ import { genericOAuth } from 'better-auth/plugins';
 
 const { KEYFLOW_AUTH_HOST, KEYFLOW_AUTH_CLIENT_ID, KEYFLOW_AUTH_CLIENT_SECRET } = process.env;
 
+export type Session = typeof auth.$Infer.Session;
+export type SessionUser = Session['user'];
+
 export const auth = betterAuth({
   user: {
     additionalFields: {

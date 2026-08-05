@@ -3,39 +3,34 @@
 ## `KeyFlow Authorization Server` 연동 (better-auth)
 
 [better-auth](https://www.better-auth.com/) 의 `genericOAuth` plugin (PKCE) 을 사용하여
-`KeyFlow Authorization Server` 와 직접 연동한다.
-로그인되어 있지 않은 경우 `src/proxy.ts` 에서 `/login` 으로 `redirect` 한다.
+`KeyFlow Authorization Server` 와 직접 연동한다. 로그인되어 있지 않은 경우 `src/proxy.ts` 에서 `/login` 으로 `redirect` 한다.
 
 ### login / logout — route handler
 
 `/login`, `/logout` 은 page 가 아닌 **route handler** (`src/app/login/route.ts`,
-`src/app/logout/route.ts`) 로 구현되어 있다. 실제 route 로 React rendering 하지 않고
-바로 redirect 된다.
+`src/app/logout/route.ts`) 로 구현되어 있다. 실제 route 로 React rendering 하지 않고 바로 redirect 된다.
 
 - `/login` — better-auth `signInWithOAuth2` 로 KeyFlow authorize URL 을 생성하여 redirect 한다.
   `?callback=` query 로 로그인 후 이동할 경로를 지정할 수 있다.
-- `/logout` — better-auth session `signOut` 후, KeyFlow 의 OIDC end session endpoint
-  (`/connect/logout`) 로 `id_token_hint` 와 함께 redirect 하여 SSO session 까지 종료한다.
+- `/logout` — better-auth session `signOut` 후, KeyFlow 의 OIDC end session endpoint (`/connect/logout`) 로 `id_token_hint`
+  와 함께 redirect 하여 SSO session 까지 종료한다.
 
 ### API proxy — access token 비노출
 
-browser 에는 access token 이 노출되지 않는다. `/api/**` 요청은 catch-all route handler
-(`src/app/api/[...path]/route.ts`) 가 server side 에서 better-auth 로부터 access token 을
-조회하여 `Authorization: Bearer` header 로 조립한 뒤 `API_HOST` 로 전달한다.
-session 이 없으면 `401` 을 응답한다.
+browser 에는 access token 이 노출되지 않는다. `/api/**` 요청은 catch-all route handler (`src/app/api/[...path]/route.ts`) 가 server
+side 에서 better-auth 로부터 access token 을 조회하여 `Authorization: Bearer` header 로 조립한 뒤 `API_HOST` 로 전달한다. session 이 없으면
+`401` 을 응답한다.
 
 ### 환경 변수 (.env)
 
-| 변수                         | 설명                                                        |
-| ---------------------------- | ----------------------------------------------------------- |
-| `BETTER_AUTH_URL`            | better-auth base URL (배포된 web 의 실제 URL)               |
-| `BETTER_AUTH_SECRET`         | better-auth secret                                          |
-| `KEYFLOW_AUTH_HOST`          | KeyFlow Authorization Server host                           |
-| `KEYFLOW_AUTH_CLIENT_ID`     | KeyFlow OAuth client id                                     |
-| `KEYFLOW_AUTH_CLIENT_SECRET` | KeyFlow OAuth client secret                                 |
-| `API_HOST`                   | API proxy 대상 host (`/api/**` 요청이 전달되는 backend API) |
-
-
+| 변수                         | 설명                                                        | 비고                                                         |
+|------------------------------|-------------------------------------------------------------|--------------------------------------------------------------|
+| `BETTER_AUTH_URL`            | better-auth base URL (배포된 web 의 실제 URL)               |                                                              |
+| `BETTER_AUTH_SECRET`         | better-auth secret                                          | [generate-secret](https://better-auth.com/docs/installation) |
+| `KEYFLOW_AUTH_HOST`          | KeyFlow Authorization Server host                           |                                                              |
+| `KEYFLOW_AUTH_CLIENT_ID`     | KeyFlow OAuth client id                                     |                                                              |
+| `KEYFLOW_AUTH_CLIENT_SECRET` | KeyFlow OAuth client secret                                 |                                                              |
+| `API_HOST`                   | API proxy 대상 host (`/api/**` 요청이 전달되는 backend API) |                                                              |
 
 ## Spec
 
@@ -53,19 +48,19 @@ session 이 없으면 `401` 을 응답한다.
 - zustand 5
 - sockjs
 
-
-
-
 ## eslint + prettier
+
 eslint + prettier 는 Bob Park Repository 에 따른다.
+
 - eslint: https://github.com/bob-park/eslint-config-bobpark
 - prettier: https://github.com/bob-park/prettier-config-bobpark
 
+## Project node version management
 
-## Project node version management 
 node version 관리는 기본적으로 `mise` (mise en place) 로 구성한다.
 
 `mise` 설정시 다음과 같이 명령어를 실행한다.
+
 ```bash
 # project 의 mise configuration 을 trust
 mise trust
@@ -74,8 +69,8 @@ mise trust
 mise ls 
 ```
 
-
 ## dir 구조
+
 ```text
 src
 ├── app # app router
@@ -122,13 +117,13 @@ src
  * ProblemDetail
  */
 type ProblemDetail = {
-  type: string;
-  title: string;
-  status: number;
-  detail: string;
-  code: string;
-  timestamp: Date;
-  exception: string;
+    type: string;
+    title: string;
+    status: number;
+    detail: string;
+    code: string;
+    timestamp: Date;
+    exception: string;
 };
 
 // ...
@@ -141,23 +136,23 @@ type ProblemDetail = {
 
 // ...
 
-export function useUserRegister({ onSuccess, onError }: QueryMutationHandle<User>) {
-  const queryClient = useQueryClient();
+export function useUserRegister({onSuccess, onError}: QueryMutationHandle<User>) {
+    const queryClient = useQueryClient();
 
-  const { mutate, isPending } = useMutation({
-    mutationKey: ['users', 'register'],
-    mutationFn: (req: UserRegisterRequest) => register(req),
-    onSuccess: async (data) => {
-      onSuccess?.(data);
+    const {mutate, isPending} = useMutation({
+        mutationKey: ['users', 'register'],
+        mutationFn: (req: UserRegisterRequest) => register(req),
+        onSuccess: async (data) => {
+            onSuccess?.(data);
 
-      await queryClient.invalidateQueries({ queryKey: ['users'] });
-    },
-    onError: (err) => {
-      onError?.(err.data); // error handling
-    },
-  });
+            await queryClient.invalidateQueries({queryKey: ['users']});
+        },
+        onError: (err) => {
+            onError?.(err.data); // error handling
+        },
+    });
 
-  return { register: mutate, isLoading: isPending };
+    return {register: mutate, isLoading: isPending};
 }
 
 // ...
@@ -170,32 +165,36 @@ export function useUserRegister({ onSuccess, onError }: QueryMutationHandle<User
 
 // ...
 
-const { register } = useUserRegister({
-  onSuccess: (data) => console.log(data),
-  onError: (err) => {
-    if (err.code === 'BAD_REQUEST') {
-      console.log('잘못된 요청');
-    }
-  },
+const {register} = useUserRegister({
+    onSuccess: (data) => console.log(data),
+    onError: (err) => {
+        if (err.code === 'BAD_REQUEST') {
+            console.log('잘못된 요청');
+        }
+    },
 });
 
 // ...
 ```
 
-
 ## `PR` Merge 시 자동 version up 기능
+
 `github workflows` + `github actions` 로 PR 시 자동으로 version up 을 진행한다.
 
 ### version pattern
+
 [major].[minor].[patch]-rc[index]-[yyyyMMdd]
 
 #### major
+
 PR 제목에 `xxx [major]` 인 경우 major 버전이 `+1` 된다.
 
 #### minor
+
 PR 제목에 `xxx [minor]` 인 경우 minor 버전이 `+1` 된다.
 
 #### patch
+
 PR 제목에 `xxx` 인 경우 patch 버전이 `+1` 된다. 단, 같은 날인 경우 rc[index] 가 `+1` 된다.
 
 ### 수동 version up (`bump-version.sh`)
@@ -206,19 +205,17 @@ PR 제목에 `xxx` 인 경우 patch 버전이 `+1` 된다. 단, 같은 날인 �
 ./bump-version.sh [patch|minor|major|date]  # 기본값: patch
 ```
 
-| 타입    | 동작                                                                          |
-| ------- | ----------------------------------------------------------------------------- |
-| `patch` | 같은 날짜면 `rc[index]` 만 `+1`, 다른 날짜면 patch `+1` 후 `rc1` 로 리셋      |
-| `minor` | 날짜와 무관하게 minor `+1`, patch 는 `0`, `rc1` 로 리셋                       |
-| `major` | 날짜와 무관하게 major `+1`, minor / patch 는 `0`, `rc1` 로 리셋               |
-| `date`  | 같은 날짜면 `rc[index]` 만 `+1`, 다른 날짜면 날짜만 갱신 후 `rc1` 로 리셋     |
-
+| 타입    | 동작                                                                      |
+|---------|---------------------------------------------------------------------------|
+| `patch` | 같은 날짜면 `rc[index]` 만 `+1`, 다른 날짜면 patch `+1` 후 `rc1` 로 리셋  |
+| `minor` | 날짜와 무관하게 minor `+1`, patch 는 `0`, `rc1` 로 리셋                   |
+| `major` | 날짜와 무관하게 major `+1`, minor / patch 는 `0`, `rc1` 로 리셋           |
+| `date`  | 같은 날짜면 `rc[index]` 만 `+1`, 다른 날짜면 날짜만 갱신 후 `rc1` 로 리셋 |
 
 ## Server Action 사용 시 주의 (reverse proxy)
 
-Next.js Server Action 은 요청의 `Origin` 과 `Host`(또는 `X-Forwarded-Host`) 가 일치해야 동작한다.
-reverse proxy 뒤에서 구동하는 경우, 반드시 `NGINX` 를 사용해서 `X-Forwarded-Host` 에 실제 요청
-host 를 넣어야 한다. 누락 시 Server Action 요청이 차단된다. (`Invalid Server Actions request`)
+Next.js Server Action 은 요청의 `Origin` 과 `Host`(또는 `X-Forwarded-Host`) 가 일치해야 동작한다. reverse proxy 뒤에서 구동하는 경우, 반드시 `NGINX`
+를 사용해서 `X-Forwarded-Host` 에 실제 요청 host 를 넣어야 한다. 누락 시 Server Action 요청이 차단된다. (`Invalid Server Actions request`)
 
 예시는 아래와 같다. (환경: Docker Container)
 
@@ -282,11 +279,10 @@ server {
 }
 ```
 
-
 ## Build
-기본적으로 docker container 로 빌드한다.
-multi-arch 도 지원해야하므로, `docker buildx bake` 를 사용하여 build 한다.
-반드시 `docker-compose.yml` 를 수정하여, 올바른 image 와 tag 를 사용할 수 있도록 해야한다.
+
+기본적으로 docker container 로 빌드한다. multi-arch 도 지원해야하므로, `docker buildx bake` 를 사용하여 build 한다. 반드시 `docker-compose.yml` 를
+수정하여, 올바른 image 와 tag 를 사용할 수 있도록 해야한다.
 
 ```bash
 # package.json 의 version 을 기준으로 image version 을 사용한다.
