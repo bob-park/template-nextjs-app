@@ -241,7 +241,6 @@ services:
 
 ```nginx
 # default.conf.template
-
 log_format  proxy_log  '[$time_local] $remote_addr - $remote_user "$host$request_uri" '
                       '$status $body_bytes_sent "$http_referer" '
                       '"$http_user_agent" "$http_x_forwarded_for"'
@@ -258,9 +257,11 @@ server {
     keepalive_timeout  0;
 
     location / {
-        rewrite (/.*)$ $1 break;
         proxy_pass ${WEB_HOST};
         proxy_redirect off;
+        proxy_buffer_size                   128k;
+        proxy_buffers                       8 256k;
+        proxy_busy_buffers_size             256k;
         proxy_set_header  Host              $http_host;   # required for docker client's sake
         proxy_set_header  X-Real-IP         $remote_addr; # pass on real client's IP
         proxy_set_header  X-Forwarded-For   $proxy_add_x_forwarded_for;
