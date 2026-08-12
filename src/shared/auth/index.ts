@@ -35,6 +35,7 @@ export const auth = betterAuth({
           pkce: true,
           discoveryUrl: `${KEYFLOW_AUTH_HOST}/.well-known/openid-configuration`,
           scopes: ['openid', 'profile', 'users:read:summary'],
+          overrideUserInfo: true,
         },
       ],
     }),
