@@ -32,6 +32,9 @@ side 에서 better-auth 로부터 access token 을 조회하여 `Authorization: 
 | `KEYFLOW_AUTH_CLIENT_SECRET` | KeyFlow OAuth client secret                                 |                                                              |
 | `API_HOST`                   | API proxy 대상 host (`/api/**` 요청이 전달되는 backend API) |                                                              |
 
+### Redirect URI
+- {HOST}/api/auth/oauth2/callback/keyflow-auth
+
 ## Spec
 
 - typescript 6
