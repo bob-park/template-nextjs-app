@@ -9,5 +9,9 @@ const COOKIE_NAME_THEME = 'theme';
 export async function setTheme(theme: Theme) {
   const cookieStore = await cookies();
 
-  cookieStore.set(COOKIE_NAME_THEME, theme);
+  cookieStore.set(COOKIE_NAME_THEME, theme, {
+    path: '/',
+    maxAge: 60 * 60 * 24 * 365, // 365 days
+    sameSite: 'lax',
+  });
 }
