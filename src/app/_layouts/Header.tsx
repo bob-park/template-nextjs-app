@@ -13,6 +13,8 @@ export default async function Header() {
 
   const userinfo = await getUserinfo();
 
+  console.log(userinfo);
+
   return (
     <header className="flex w-full flex-row items-center justify-between">
       <div className="">

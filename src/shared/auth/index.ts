@@ -32,10 +32,20 @@ export const auth = betterAuth({
           providerId: 'keyflow-auth',
           clientId: KEYFLOW_AUTH_CLIENT_ID || '',
           clientSecret: KEYFLOW_AUTH_CLIENT_SECRET,
-          pkce: true,
           discoveryUrl: `${KEYFLOW_AUTH_HOST}/.well-known/openid-configuration`,
           scopes: ['openid', 'profile', 'users:read:summary'],
           overrideUserInfo: true,
+          mapProfileToUser: (profile) => {
+            const sub = profile.sub;
+            const userId = profile.userId as string;
+            const role = profile.role as string;
+
+            return {
+              sub,
+              userId,
+              role,
+            };
+          },
         },
       ],
     }),

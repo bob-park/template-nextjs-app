@@ -2,12 +2,12 @@
 
 import { headers } from 'next/headers';
 
-import { DEFAULT_PROVIDER_ID, auth } from '@/shared/auth/index';
+import { auth } from '@/shared/auth/index';
 
 export async function getAccessToken() {
   const accessToken = await auth.api.getAccessToken({
     body: {
-      providerId: DEFAULT_PROVIDER_ID,
+      useAccountCookie: true,
     },
     headers: await headers(),
   });

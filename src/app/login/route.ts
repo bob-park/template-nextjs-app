@@ -5,13 +5,13 @@ import { auth } from '@/shared/auth';
 export async function GET(request: NextRequest) {
   const callback = request.nextUrl.searchParams.get('callback') ?? '/';
 
-  const { url } = await auth.api.signInWithOAuth2({
+  const { url } = await auth.api.signInSocial({
     body: {
-      providerId: 'keyflow-auth',
+      provider: 'keyflow-auth',
       callbackURL: callback,
     },
     headers: request.headers,
   });
 
-  return NextResponse.redirect(url);
+  return NextResponse.redirect(url || '');
 }

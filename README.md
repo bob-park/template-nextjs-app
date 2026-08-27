@@ -10,7 +10,7 @@
 `/login`, `/logout` 은 page 가 아닌 **route handler** (`src/app/login/route.ts`,
 `src/app/logout/route.ts`) 로 구현되어 있다. 실제 route 로 React rendering 하지 않고 바로 redirect 된다.
 
-- `/login` — better-auth `signInWithOAuth2` 로 KeyFlow authorize URL 을 생성하여 redirect 한다.
+- `/login` — better-auth `signInSocial` 로 KeyFlow authorize URL 을 생성하여 redirect 한다.
   `?callback=` query 로 로그인 후 이동할 경로를 지정할 수 있다.
 - `/logout` — better-auth session `signOut` 후, KeyFlow 의 OIDC end session endpoint (`/connect/logout`) 로 `id_token_hint`
   와 함께 redirect 하여 SSO session 까지 종료한다.
@@ -33,7 +33,7 @@ side 에서 better-auth 로부터 access token 을 조회하여 `Authorization: 
 | `API_HOST`                   | API proxy 대상 host (`/api/**` 요청이 전달되는 backend API) |                                                              |
 
 ### Redirect URI
-- {HOST}/api/auth/oauth2/callback/keyflow-auth
+- {HOST}/api/auth/callback/keyflow-auth
 
 ## Spec
 

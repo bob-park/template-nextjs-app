@@ -12,11 +12,12 @@ export async function GET(request: NextRequest) {
 
   try {
     const token = await auth.api.getAccessToken({
-      body: { providerId: 'keyflow-auth' },
+      body: { useAccountCookie: true },
       headers: nextHeaders,
     });
     idToken = token.idToken;
-  } catch {
+  } catch (e) {
+    console.error(e);
     return NextResponse.redirect(new URL('/', request.url));
   }
 
