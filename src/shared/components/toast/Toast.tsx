@@ -62,7 +62,7 @@ export default function Toast({ message, timeout, onRemove }: Readonly<ToastProp
   return (
     <div
       className={cx(
-        'group relative flex w-[340px] items-start gap-3 overflow-hidden rounded-lg p-3.5 pb-4',
+        'group relative flex w-[340px] cursor-pointer items-start gap-3 overflow-hidden rounded-lg p-3.5 pb-4',
         'bg-[#fdfdfd] text-[#181818] shadow-[0_8px_24px_rgba(0,0,0,0.18)]',
         'dark:bg-[#181818] dark:text-white dark:shadow-[0_8px_24px_rgba(0,0,0,0.5)]',
         'animate-[toast-in_0.35s_cubic-bezier(0.2,0.9,0.3,1)]',
@@ -70,6 +70,8 @@ export default function Toast({ message, timeout, onRemove }: Readonly<ToastProp
         { 'translate-x-6 opacity-0': isLeaving },
       )}
       role="alert"
+      // Click anywhere to dismiss; the ✕ button stays for keyboard users.
+      onClick={handleClose}
       onTransitionEnd={handleTransitionEnd}
     >
       <span className={cx('mt-0.5 flex-none', levelStyle.text)}>
