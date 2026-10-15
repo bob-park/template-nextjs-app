@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 
 import ForbiddenLottie from '@/app/forbidden.json';
 
-import Lottie from 'lottie-react';
+import { Lottie } from 'lottie-react';
 
 export default function Forbidden() {
   // hooks
@@ -13,7 +13,7 @@ export default function Forbidden() {
   return (
     <div className="flex h-[calc(100vh-100px)] w-full flex-col items-center justify-center gap-3">
       <div className="w-96">
-        <Lottie animationData={ForbiddenLottie} loop />
+        <Lottie src={ForbiddenLottie} autoplay loop />
       </div>
 
       <div className="">
