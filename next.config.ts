@@ -7,7 +7,6 @@ const nextConfig: NextConfig = {
   reactStrictMode: false,
   experimental: {
     authInterrupts: true,
-    useTypeScriptCli: true,
   },
   allowedDevOrigins: ['127.0.0.1', 'localhost'],
   images: {
