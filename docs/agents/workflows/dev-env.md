@@ -9,12 +9,12 @@ related:
 
 # Dev Environment & Lint/Format
 
-> Node 버전은 `mise` 로 동기화, 패키지 매니저는 corepack `yarn@4.14.1`. 커밋 전 `yarn lint` 필수, 포매팅은 `yarn prettier`. 테스트 러너는 아직 없음.
+> Node / yarn 버전은 `mise` 로 동기화 (`.mise.toml`). 커밋 전 `yarn lint` 필수, 포매팅은 `yarn prettier`. 테스트 러너는 아직 없음.
 
 ## Environment
 
-- **Node version manager:** `mise`. First-time setup: `mise trust && mise ls`.
-- **Package manager:** `yarn@4.14.1` via corepack (configured in `package.json#packageManager`).
+- **Node / yarn version manager:** `mise` (`.mise.toml`). First-time setup: `mise trust && mise install`.
+- **Package manager:** `yarn@4.18.1` installed by `mise` (not corepack). Keep `.mise.toml` and `package.json#packageManager` in sync.
 
 ## Common scripts
 
