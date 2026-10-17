@@ -52,6 +52,8 @@ The app integrates directly with the KeyFlow Authorization Server via
 
 ## Design & UI Work
 
+- For any design or UI task, always check [`docs/design/`](docs/design/) first
+  and follow its prompt templates and design guides.
 - For any design or UI task, always show **at least 3 mockup designs** via the
   superpowers visual companion (brainstorming) before touching `src/`.
 - Always use the `ui-ux-pro-max` skill when authoring UI mockup designs.
