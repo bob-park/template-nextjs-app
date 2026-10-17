@@ -50,6 +50,12 @@ The app integrates directly with the KeyFlow Authorization Server via
 - better-auth config: `src/shared/auth/index.ts` (server),
   `src/shared/auth/auth-client.ts` (client). Session guard: `src/proxy.ts`.
 
+## Design & UI Work
+
+- For any design or UI task, always show **at least 3 mockup designs** via the
+  superpowers visual companion (brainstorming) before touching `src/`.
+- Always use the `ui-ux-pro-max` skill when authoring UI mockup designs.
+
 ## How to use
 
 - 새 도메인 추가 → `structure.md` → `libs/ky-react-query.md` → `libs/zustand-slice.md`

@@ -31,8 +31,9 @@
 사용자가 UI / 디자인 관련 요청(목업, 레이아웃 비교, 비주얼 컴포넌트) 을 주면:
 
 1. `./docs/design/` 에 적용 가능한 prompt 템플릿이 있는지 먼저 확인한다.
-2. superpowers brainstorming 단계에서 visual companion 사용을 제안한다.
-3. 사용자가 동의하면 정적 HTML 목업을 임시 디렉토리에 작성한다.
+2. superpowers brainstorming 단계에서 항상 visual companion 을 사용한다.
+3. `ui-ux-pro-max` 스킬을 사용해 최소 3개 이상의 정적 HTML 목업을 임시
+   디렉토리에 작성한다.
 4. `npx serve <dir>` 또는 `python3 -m http.server` 로 로컬 HTTP 서버를
    구동하고, 접속 URL과 포트를 사용자에게 안내한다.
 5. 사용자 피드백을 받아 반복 작업한 뒤, 최종 합의된 디자인만 실제
