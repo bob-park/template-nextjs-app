@@ -2027,7 +2027,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^26.6.5":
+"@types/node@npm:^26":
   version: 26.6.5
   resolution: "@types/node@npm:26.6.5"
   dependencies:
@@ -6347,7 +6347,7 @@ __metadata:
     "@tanstack/react-query-devtools": "npm:^5.104.3"
     "@types/classnames": "npm:^2.3.4"
     "@types/lodash": "npm:^4.17.26"
-    "@types/node": "npm:^26.6.5"
+    "@types/node": "npm:^26"
     "@types/react": "npm:19.3.0"
     "@types/react-dom": "npm:19.3.0"
     "@types/sockjs-client": "npm:^1"
