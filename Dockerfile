@@ -57,7 +57,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 USER nextjs
 
 EXPOSE 3000
-HEALTHCHECK --interval=10s --timeout=10s --retries=5 CMD curl --fail http://localhost:3000/api/health || exit 1
+HEALTHCHECK --interval=60s --timeout=10s --retries=5 --start-period=90s --start-interval=10s CMD curl --fail http://localhost:3000/api/health || exit 1
 
 ENV PORT=3000
 
