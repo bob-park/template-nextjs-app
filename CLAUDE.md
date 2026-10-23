@@ -15,7 +15,7 @@
 - `yarn start` — production 빌드 실행
 - `yarn lint` — ESLint 실행 (커밋 전 필수)
 - `yarn prettier` — 전체 소스 포매팅
-- `mise trust && mise install` — Node / yarn 버전 동기화 (`.mise.toml`)
+- `mise trust && mise install` — Node / yarn 버전 동기화 (`mise.toml`)
 
 테스트 스크립트는 현재 `package.json` 에 정의되어 있지 않다. 테스트가
 도입되면 본 섹션과 `docs/agents/tech-stack.md`,
