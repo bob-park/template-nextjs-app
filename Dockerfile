@@ -30,7 +30,7 @@ COPY . .
 
 ENV NEXT_TELEMETRY_DISABLED=1
 
-RUN corepack prepare yarn@4.14.1 --activate
+RUN corepack prepare yarn@4.18.1 --activate
 RUN yarn build
 
 # Production image, copy all the files and run next
