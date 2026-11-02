@@ -54,3 +54,6 @@ docker-compose*dev.yml
 .claude/
 .gstack/
 .superpowers/
+
+# agent-desktop UI test reports
+.ui-test-results/

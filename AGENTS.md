@@ -33,6 +33,9 @@ frontmatter (`title`, `scope`, `applies_to`, `related`) 와 TL;DR blockquote 로
 - [Git Workflow](docs/agents/workflows/git.md) — branch, commit prefix, PR base
 - [Build & Release](docs/agents/workflows/build-release.md) — Docker buildx bake, version pattern
 
+### Testing
+- [UI Testing](docs/agents/ui-testing.md) — agent-desktop + Chrome 으로 실행 중인 앱 검증, P0 시나리오 `docs/ui-scenarios/`, 리포트 `.ui-test-results/`
+
 ## Auth (better-auth)
 
 The app integrates directly with the KeyFlow Authorization Server via
@@ -68,3 +71,4 @@ The app integrates directly with the KeyFlow Authorization Server via
 - Theme 전환 → `libs/theme.md`
 - Server-side data fetch → `libs/ky-react-query.md` 의 "Server-side fetch" 섹션
 - PR 올리기 → `workflows/git.md`
+- 실행 중인 앱 보기 / UI 테스트 → `ui-testing.md` → `workflows/dev-env.md`
