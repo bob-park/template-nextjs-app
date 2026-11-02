@@ -50,7 +50,7 @@ agent-desktop permissions --guide   # macOS: grant Accessibility to the terminal
 ```
 
 - **macOS:** without Accessibility permission nothing works. On a permission error, stop and ask the user to grant it.
-- **Windows:** the terminal and Chrome must run at the same privilege level (admin or not).
+- **Windows:** the terminal and Chrome must run at the same privilege level (admin or not). `launch --no-attach` returns `ACTION_FAILED` while any Chrome is running: ask the user to close their Chrome, or mark the run `N/A (Chrome already running)`.
 - **Linux:** needs `at-spi2-core`.
 
 ### Orca
@@ -63,7 +63,7 @@ Inside Orca, the global "use Orca's browser" rule covers ordinary browsing only.
 - Don't guess flags. Check `agent-desktop <command> --help`.
 - Judge screen state from the **accessibility snapshot**. Use `screenshot` only for visual checks: layout, color, overlap, theme.
 - Every command prints a JSON envelope (`ok`, `data` / `error`). Always check `ok`.
-- Default to headless actions. Use `--headed` (real pointer/keyboard) only when headless doesn't work, and record why.
+- Actions are headless. Use `--headed` (real pointer/keyboard) only when the user explicitly permits physical input; never switch to it to recover from a headless failure. Real input can land in the user's own Chrome, and during login that means the password. Without permission, mark the step **FAIL (blocked)**.
 
 ## Running a test
 
@@ -80,13 +80,13 @@ Inside Orca, the global "use Orca's browser" rule covers ordinary browsing only.
 
    - `--no-attach` is required: without it agent-desktop attaches to the user's running Chrome and opens the URL in their profile.
    - The temp profile starts with no `theme` / `locale` / session cookies, so every run starts clean.
-3. `agent-desktop list-windows --app "Google Chrome"` and pick the test window (the one showing `$BASE_URL`). Keep its id as `WIN` and pass `--window-id "$WIN"` to every command from here on.
+3. From the `launch` output keep `data.pid` as `TEST_PID` and `data.window.id` as `WIN` (if `window` is missing, take the window whose `pid` is `TEST_PID` from `agent-desktop list-windows --app "Google Chrome"`). Pass `--window-id "$WIN"` to every command from here on.
 
 ### Browser notes
 
 - Page content sits under Chrome's web area in the tree. Get the structure with `--skeleton`, then zoom in with `--root <ref>`.
-- Go to a URL: `focus-window --window-id "$WIN"` → `press cmd+l` (Windows/Linux `ctrl+l`) → `type "<url>"` → `press return`.
-- Reload: `press cmd+r` (`ctrl+r`) after `focus-window`.
+- Go to a URL: snapshot the test window, find the address bar text field (`find --role textfield` or the toolbar under `--skeleton`), then `set-value @<sid>:eN "<url>"` and `press return --window-id "$WIN"`. `type` / `set-value` always take a ref; there is no "type into whatever has focus".
+- Reload: `press cmd+r --window-id "$WIN"` (`ctrl+r`), or `set-value` the current URL again.
 - If the web area is empty or missing, quit the test instance and relaunch with `--arg=--force-renderer-accessibility`.
 - KeyFlow's login page is a different origin but the same window; treat it like any other page.
 
@@ -115,9 +115,9 @@ agent-desktop snapshot --app "Google Chrome" --window-id "$WIN" -i --compact   #
 
 ### Cleanup
 
-- Close only the test window(s) by `--window-id` (focus it, `press cmd+w` / `ctrl+w`), then make sure the test instance has exited.
-- **Never run `close-app "Google Chrome"` while the user's own Chrome is running**: both instances share the app name, so it would quit the user's browser too. Use `close-app` only when `list-windows` shows no Chrome window besides the test ones.
-- Delete `$PROFILE_DIR` and stop the `yarn dev` process you started.
+- Stop the test instance by its PID only: `kill "$TEST_PID"`, then confirm it is gone (`kill -0 "$TEST_PID"` fails; Windows `Stop-Process -Id`). Closing its window is not enough: on macOS the process keeps running with no windows.
+- **Never run `close-app "Google Chrome"`.** Both instances share the app name, and the user's Chrome may be running with every window closed or minimized, so `list-windows` can't prove it isn't there.
+- Delete `$PROFILE_DIR` only after the test instance has exited, then stop the `yarn dev` process you started.
 
 ## Making UI testable
 
@@ -161,6 +161,8 @@ One file per scenario: `docs/ui-scenarios/<NN>-<name>.md`, in English.
 ## UX checks
 - …
 ```
+
+Run order: 01, 03, 04, 05, then run 02 last (it logs out and ends the KeyFlow session). A scenario that needs a session and finds the login form re-runs 01's login steps first, under the same credential rules.
 
 The P0 set in `docs/ui-scenarios/` (01–05) must pass, or be marked `N/A` with the reason the scenario states, for every app built from this template. Add app-specific scenarios after them.
 

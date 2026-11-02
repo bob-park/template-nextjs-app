@@ -1,7 +1,7 @@
 # 03-theme: Theme switch and persistence
 
 - Priority: P0
-- Preconditions: Test Chrome launched per [ui-testing](../agents/ui-testing.md#setup); `yarn dev` running at the `BETTER_AUTH_URL` origin (`$BASE_URL`). Mark `N/A (no test account)` or `N/A (KeyFlow unreachable)` per ui-testing. Logged in (run 01 first). Fresh profile, so the theme starts as `light` (no `theme` cookie).
+- Preconditions: Test Chrome launched per [ui-testing](../agents/ui-testing.md#setup); `yarn dev` running at the `BETTER_AUTH_URL` origin (`$BASE_URL`). Mark `N/A (no test account)` or `N/A (KeyFlow unreachable)` per ui-testing. Logged in (run 01 first). If not logged in, re-run 01 steps 1–3 first (same credential rules). Fresh profile, so the theme starts as `light` (no `theme` cookie).
 
 ## Steps
 1. Snapshot the header and screenshot the window.

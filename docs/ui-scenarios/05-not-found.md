@@ -1,7 +1,7 @@
 # 05-not-found: Unknown path
 
 - Priority: P0
-- Preconditions: Test Chrome launched per [ui-testing](../agents/ui-testing.md#setup); `yarn dev` running at the `BETTER_AUTH_URL` origin (`$BASE_URL`). Mark `N/A (no test account)` or `N/A (KeyFlow unreachable)` per ui-testing. Logged in (run 01 first). Logged out, an unknown path redirects to `/login` instead (`src/proxy.ts` guards every path except `/login`, `/logout`, `/api`, `_next`), so this scenario needs a session.
+- Preconditions: Test Chrome launched per [ui-testing](../agents/ui-testing.md#setup); `yarn dev` running at the `BETTER_AUTH_URL` origin (`$BASE_URL`). Mark `N/A (no test account)` or `N/A (KeyFlow unreachable)` per ui-testing. Logged in (run 01 first). If not logged in, re-run 01 steps 1–3 first (same credential rules). Logged out, an unknown path redirects to `/login` instead (`src/proxy.ts` guards every path except `/login`, `/logout`, `/api`, `_next`), so this scenario needs a session.
 
 ## Steps
 1. Navigate to `$BASE_URL/__ui-test-not-found`. Snapshot and screenshot.

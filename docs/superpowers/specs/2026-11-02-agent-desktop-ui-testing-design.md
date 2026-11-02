@@ -72,7 +72,7 @@ P0 시나리오를 검증하고, 같은 형식의 리포트를 남길 수 있게
   - Orca 관계 한 문단.
 - **Basic rules** — Rust 판 그대로 (`skills get desktop` / `platform`, `--help`, snapshot 우선, JSON envelope, headless 기본).
 - **Running a test** — Launch / Observe→act→verify / Errors / Cleanup. Tauri 창 섹션 대신 "Browser notes":
-  - 주소창 이동은 `focus-window` → `press cmd+l` → `type <url>` → `press return` (Windows 는 `ctrl+l`).
+  - 주소창 이동은 snapshot 으로 주소창 text field ref 를 찾아 `set-value @ref "<url>"` → `press return --window-id` (`type`/`set-value` 는 항상 ref 필요). [final review 로 수정]
   - 웹 콘텐츠는 Chrome 접근성 트리의 web area 아래에 있음 → `--skeleton` 후 `--root` 로 좁히기.
   - Chrome 접근성 트리가 비어 있으면 `--force-renderer-accessibility` 플래그로 재실행.
   - Cleanup: 테스트 창만 `--window-id` 로 닫고 테스트 인스턴스 종료 (사용자 Chrome 이 실행 중이면 `close-app` 금지), 임시 프로필 삭제, `yarn dev` 종료.

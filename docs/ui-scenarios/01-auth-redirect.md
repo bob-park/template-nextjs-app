@@ -10,7 +10,7 @@
 4. Snapshot the test window once back on the app.
 
 ## Expected
-- Step 2: the request went through `/login?callback=%2F` (`src/proxy.ts` → `src/app/login/route.ts`) and the window now shows the KeyFlow login form (account and password inputs).
+- Step 2: the window shows the KeyFlow login form (account and password inputs). Note: the app gets there via `/login?callback=%2F` (`src/proxy.ts` → `src/app/login/route.ts`); a snapshot shows only the end of that chain, so don't claim the intermediate URL.
 - Step 4: the URL is `$BASE_URL/`; the header shows `username:` followed by a non-empty name (`src/app/_layouts/Header.tsx`).
 - No `role="alert"` element at any step.
 
