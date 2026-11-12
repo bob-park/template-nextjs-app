@@ -7,6 +7,15 @@ working in this repository. 본문은 영어, 도메인/비즈니스 용어는 �
 frontmatter (`title`, `scope`, `applies_to`, `related`) 와 TL;DR blockquote 로
 시작하므로, 작업 전 해당 파일의 첫 5~10줄만 확인해도 적용 여부를 판단할 수 있다.
 
+## Before finishing a branch
+
+In the `superpowers` workflow, after every task is done and the whole-branch code review is finished, do this **before** `finishing-a-development-branch`:
+
+1. List the UI files this branch changed: `git diff <base>...HEAD --name-only` (`<base>` is `develop` for `feature/*`, `main` for `hotfix/*`). UI files are `src/**/*.{tsx,css}` and `messages/{en,ko}.json`.
+2. If any UI file changed, run the `better-interface` skill from `jakubkrehel/skills` (it covers the other `better-*` skills in one ranked report), scoped to the screens and components this branch changed. Don't review screens the branch didn't touch. If the skill isn't installed, stop and tell the user; don't skip the step.
+3. Treat `HIGH` findings like Critical/Important code-review findings: fix them, then rerun `yarn lint` and recheck light/dark and ko/en ([UI Testing](docs/agents/ui-testing.md)). Report the rest as a list; don't fix them.
+4. Never make a design change the plan doesn't contain without asking first. This includes a `HIGH` fix that changes how the UI looks (tokens, colors, layout, copy).
+
 ## Map
 
 ### Foundations
