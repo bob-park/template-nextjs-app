@@ -9,13 +9,13 @@ related:
 
 # Git Workflow
 
-> `master` / `develop` / `feature/*` / `hotfix/*` 4-branch 모델. feature PR base 는 반드시 `develop`. 커밋 prefix = `feat / refactor / fix / build / docs / test`. PR 제목의 `[major]` / `[minor]` 토큰이 version bump 를 결정.
+> `main` / `develop` / `feature/*` / `hotfix/*` 4-branch 모델. feature PR base 는 반드시 `develop`. 커밋 prefix = `feat / refactor / fix / build / docs / test`. PR 제목의 `[major]` / `[minor]` 토큰이 version bump 를 결정.
 
 ## Branch naming
 
-These are the target conventions. The repository currently ships with `master` only; create `develop` / `feature/*` / `hotfix/*` branches on demand.
+These are the target conventions. The repository currently ships with `main` only; create `develop` / `feature/*` / `hotfix/*` branches on demand.
 
-- `master` — production-shippable. Release tags are cut from this branch.
+- `main` — production-shippable. Release tags are cut from this branch.
 - `develop` — next-release integration branch.
 - `feature/<topic>` — new feature development.
 - `hotfix/<topic>` — patches against an already-released version.
@@ -23,9 +23,9 @@ These are the target conventions. The repository currently ships with `master` o
 Rules:
 
 - Use lowercase, kebab-case for `<topic>` (e.g., `feature/asset-upload`, `hotfix/jwt-scope-mapping`).
-- When opening a PR from a `feature/*` branch, the base branch **MUST** be `develop`. Targeting `master` directly is not allowed for feature work; promotion to `master` happens through a separate `develop` → `master` release PR.
-- Do not commit directly to `master` or `develop` — always go through a PR.
-- A tag is created on `master` when a release ships; tag name follows the version pattern in [PR title & version bump](#pr-title--version-bump).
+- When opening a PR from a `feature/*` branch, the base branch **MUST** be `develop`. Targeting `main` directly is not allowed for feature work; promotion to `main` happens through a separate `develop` → `main` release PR.
+- Do not commit directly to `main` or `develop` — always go through a PR.
+- A tag is created on `main` when a release ships; tag name follows the version pattern in [PR title & version bump](#pr-title--version-bump).
 
 ## Commit message prefix
 
